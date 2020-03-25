@@ -26,7 +26,7 @@ class Notes extends Component {
           {
             this.state.notes && this.state.notes.map(note => (
               <div key={note._id} className="col-sm-12 col-md-4 col-lg-3">
-                <Link to={`/question/${note._id}`}>
+                <Link to={`blog/question/${note._id}`}>
                   <div className="card text-white bg-success mb-3">
                     <div className="card-header">Date: {note.createdAt}</div>
                     <div className="card-body">
