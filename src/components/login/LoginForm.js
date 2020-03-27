@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import authClient from '../auth/Auth';
+import axios from 'axios';
 
 
 class LoginForm extends Component {
@@ -30,11 +31,14 @@ class LoginForm extends Component {
         this.setState({
             disabled: true,
         });
-        const loginInfo = {
-            username: this.state.userName,
-            password: this.state.password
+        const loginFeedBack = (await axios.post('http://3.217.206.40:3000/login/',{
+            email: this.state.userName,
+            password: this.state.password,
+          })).data;
+        authClient.signIn(loginFeedBack);
+        if(loginFeedBack.success===true){
+            this.props.history.push('/');
         }
-        authClient.signIn(loginInfo);
     }
 
     render() {
