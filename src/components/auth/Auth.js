@@ -8,30 +8,39 @@ class Auth {
     }
 
     getProfile() {
-        return this.profile;
+        var idToken = this.getIdToken();
+        if(idToken !== null){
+            var decoded = jwtDecode(idToken);
+            return decoded;
+        }else{
+            return "No Profile Found. Please Login.";
+        }
+
     }
 
     getIdToken() {
-        return this.idToken;
+        return window.sessionStorage.getItem("infiniteCrankProfile");
     }
 
     isAuthenticated() {
-        return new Date().getTime() < this.expiresAt;
+        if(this.getIdToken() !== null){
+            var profile = this.getProfile();
+            var expiresAt = profile.exp * 1000;
+            return new Date().getTime() < expiresAt;
+        }else{
+            return false;
+        }
+
     }
 
     signIn(loginFeedBack) {
-        this.idToken = loginFeedBack.token;
-        var decoded = jwtDecode(loginFeedBack.token);
-        this.profile = decoded;
-        // set the time that the id token will expire at
-        this.expiresAt = decoded.exp * 1000;
+        if(loginFeedBack.success===true){
+            window.sessionStorage.setItem("infiniteCrankProfile",loginFeedBack.token);
+        }
     }
 
     signOut() {
-        // clear id token, profile, and expiration
-        this.idToken = null;
-        this.profile = null;
-        this.expiresAt = null;
+        window.sessionStorage.clear();
     }
 }
 
