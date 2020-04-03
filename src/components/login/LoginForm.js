@@ -12,7 +12,12 @@ class LoginForm extends Component {
             disabled: false,
             userName: '',
             password: '',
+            isAuthenticated: authClient.isAuthenticated(),
         };
+
+        if(this.state.isAuthenticated){
+            this.props.history.push('/');
+        }
     }
 
     updateUserName(value) {
