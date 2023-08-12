@@ -7,7 +7,6 @@ import adminConfig from "../config/admin.json";
 function NavBar() {
   
   let [productTypes, setProductTypes] = useState(null)
-  let [productList, setProductList] = useState(null) 
 
   useEffect(() => {
 
@@ -22,14 +21,6 @@ function NavBar() {
     })
     .then((response) =>{
       setProductTypes(response.data)
-    })
-    .then(()=>{
-      if(productTypes){
-        const productTypeNameList = productTypes.map((productType) => {
-          return <li key={productType.name} >{productType.name}</li>
-        });
-        setProductList(productTypeNameList)
-      }
     })
     .catch((err)=>{console.log(err)})
   },[productTypes])
@@ -53,7 +44,9 @@ function NavBar() {
             Products
           </button>
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-            {productList}
+            {productTypes.map((productType) => {
+                return <li key={productType.name} >{productType.name}</li>
+            })}
           </ul>
         </li>
       </ul>
