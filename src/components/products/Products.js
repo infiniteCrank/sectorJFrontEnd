@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import adminConfig from "../config/admin.json";
+import Image from '../Image/Image';
 
 function Products() {
     
@@ -28,23 +29,21 @@ function Products() {
 
     return (
     <div className="container">
-    <div className="row">
+        <div className="row">
         {products === null && <p>Loading Products...</p>}
         {
         products && products.map(product => (
-            <div key={product._id} className="col-sm-12 col-md-4 col-lg-3">
-            <Link to={`blog/question/${product._id}`}>
-                <div className="card text-white bg-success mb-3">
+            <div key={product._id} className="card col-sm-12 col-md-4 col-lg-3">
+                <Image fileName={"halloween-season-1-franken-lady.jpeg"} alt={product.name} className="card-img-top"/>
                 <div className="card-body">
-                    <h4 className="card-title">{product.name}</h4>
+                    <h5 className="card-title">{product.name}</h5>
                     <p className="card-text">{product.description}</p>
+                    <Link className="btn btn-primary" to={`blog/question/${product._id}`}>See Product</Link>
                 </div>
-                </div>
-            </Link>
             </div>
         ))
         }
-    </div>
+        </div>
     </div>
     );
 }
