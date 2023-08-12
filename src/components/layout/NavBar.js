@@ -1,7 +1,30 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import adminConfig from "../config/admin.json";
 
 function NavBar() {
+  
+  let [productTypes, setProductTypes] = useState(null)
+
+  useEffect(() => {
+
+    axios.post('http://localhost:3000/login',adminConfig)
+    .then((tokenData)=>{
+      return {
+        headers: {'Authorization': tokenData.data.token},
+      }
+    })
+    .then((config)=>{
+      return axios.get('http://localhost:3000/product/types',config)
+    })
+    .then((response) =>{
+      setProductTypes(response.data)
+    })
+    .catch((err)=>{console.log(err)})
+  },[productTypes])
+
   return (
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
