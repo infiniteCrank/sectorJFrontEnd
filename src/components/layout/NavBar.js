@@ -23,7 +23,7 @@ function NavBar() {
       setProductTypes(response.data)
     })
     .catch((err)=>{console.log(err)})
-  },[productTypes])
+  },[])
 
   return (
   <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -44,7 +44,7 @@ function NavBar() {
             Products
           </button>
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-            {productTypes.map((productType) => {
+            {productTypes && productTypes.map((productType) => {
                 return <li key={productType.name} >{productType.name}</li>
             })}
           </ul>
