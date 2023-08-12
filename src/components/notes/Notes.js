@@ -12,7 +12,7 @@ class Notes extends Component {
   }
 
   async componentDidMount() {
-    const notes = (await axios.get('http://3.217.206.40:3000/notes/')).data;
+    const notes = (await axios.get('http://localhost:3000/notes/')).data;
     this.setState({
       notes,
     });

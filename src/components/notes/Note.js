@@ -11,7 +11,7 @@ class Note extends Component {
 
   async componentDidMount() {
     const { match: { params } } = this.props;
-    const note = (await axios.get(`http://3.217.206.40:3000/notes/${params.noteId}`)).data;
+    const note = (await axios.get(`http://localhost:3000/notes/${params.noteId}`)).data;
     this.setState({
       note,
     });
