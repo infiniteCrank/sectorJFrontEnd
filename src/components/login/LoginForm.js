@@ -36,7 +36,7 @@ class LoginForm extends Component {
         this.setState({
             disabled: true,
         });
-        const loginFeedBack = (await axios.post('http://3.217.206.40:3000/login/',{
+        const loginFeedBack = (await axios.post('http://localhost:3000/login/',{
             email: this.state.userName,
             password: this.state.password,
           })).data;
