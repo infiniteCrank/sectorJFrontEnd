@@ -8,6 +8,7 @@ import Image from '../Image/Image';
 function Products() {
     
     let [products, setProducts] = useState(null)
+    let [productImages, setProductImages] = useState(null)
 
     useEffect(() => {
 
@@ -21,8 +22,31 @@ function Products() {
         return axios.get('http://localhost:3000/products',config)
         })
         .then((response) =>{
-            console.log(response.data)
         setProducts(response.data)
+        })
+        .catch((err)=>{console.log(err)})
+    },[])
+
+    useEffect(() => {
+
+        axios.post('http://localhost:3000/login',adminConfig)
+        .then((tokenData)=>{
+        return {
+            headers: {'Authorization': tokenData.data.token},
+        }
+        })
+        .then((config)=>{
+        return axios.get('http://localhost:3000/product/images',config)
+        })
+        .then((response) =>{
+            const productImagesObject = response.data;
+            const productImages = {}
+            for (let i in productImagesObject) {
+                const productImage = productImagesObject[i];
+                productImages[productImage._id] = productImage.name +"."+ productImage.imageType;
+            }
+            console.log(productImages)
+            setProductImages(productImages)
         })
         .catch((err)=>{console.log(err)})
     },[])
@@ -34,7 +58,7 @@ function Products() {
         {
         products && products.map(product => (
             <div key={product._id} className="card col-sm-12 col-md-4 col-lg-3">
-                <Image fileName={"halloween-season-1-franken-lady.jpeg"} alt={product.name} className="card-img-top"/>
+                <Image fileName={productImages && productImages[product.image]} alt={product.name} className="card-img-top"/>
                 <div className="card-body">
                     <h5 className="card-title">{product.name}</h5>
                     <p className="card-text">{product.description}</p>
