@@ -4,21 +4,13 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import adminConfig from "../config/admin.json";
 import Image from '../Image/Image';
+//import SizeChecker from './SizeChecker';
 
 function Products() {
     
     let [products, setProducts] = useState(null)
     let [productImages, setProductImages] = useState(null)
-
-    const sizeChecker = (sizes,id)=>{
-        const sizesArray = sizes.split(",");
-        return sizesArray.map(size => (
-            <div className="form-check" key={id+"_"+size+"_key"}>
-                <input type="radio" className="btn-check" name="btnradio" id={id+"_"+size} autoComplete="off"/>
-                <label className="btn btn-outline-secondary" htmlFor={id+"_"+size}>{size.toUpperCase()}</label>
-            </div>
-        ))
-    }
+    const [selectedSizes, setSelectedSizes] = useState({});
 
     useEffect(() => {
 
@@ -60,6 +52,14 @@ function Products() {
         .catch((err)=>{console.log(err)})
     },[])
 
+    const handleSizeChange = (event)=>{
+        const sizeChange = event.target.value
+        const sizeID = sizeChange.split("-")
+        selectedSizes[sizeID[1]] = sizeID[0]
+        setSelectedSizes(selectedSizes)
+        console.log(selectedSizes)
+    }
+
     return (
     <div className="container">
         <div className="row">
@@ -78,11 +78,11 @@ function Products() {
                     <p className="card-text">{product.description}</p>
                     <ul className="list-group list-group-flush">
                         <li className="list-group-item">Sizes:
-                            <div className="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                                <div className="btn-group me-2" role="group" aria-label="Second group">
-                                    {sizeChecker(product.size,product._id)}
-                                </div>
-                            </div>
+                            {/* <SizeChecker 
+                            sizes={product.size} 
+                            productId={product._id} 
+                            selectedOption={selectedSizes} handleChange={handleSizeChange}/> */}
+                            SizePicker
                         </li>
                         <li className="list-group-item">Price: {product.price}</li>
                     </ul>
