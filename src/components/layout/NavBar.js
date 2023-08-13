@@ -23,6 +23,10 @@ function NavBar({shoppingCart, saveCart}) {
     .catch((err)=>{console.log(err)})
   },[])
 
+  const handleViewCart = (e)=>{
+    console.log(shoppingCart)
+  }
+
   return (
   <nav className="navbar navbar-expand-lg navbar-light bg-light">
   <div className="container-fluid">
@@ -48,10 +52,13 @@ function NavBar({shoppingCart, saveCart}) {
           </ul>
         </li>
       </ul>
-      <form className="d-flex">
+      {/* <form className="d-flex">
         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
         <button className="btn btn-outline-success" type="submit">Search</button>
-      </form>
+      </form> */}
+      <div className="d-flex">
+      <button className="btn btn-outline-success" onClick={handleViewCart}>View Cart</button>
+      </div>
     </div>
   </div>
   </nav>
