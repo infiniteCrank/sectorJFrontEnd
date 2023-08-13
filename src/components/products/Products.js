@@ -14,10 +14,6 @@ function Products({shoppingCart, saveCart}) {
     let [productSizes, setProductSizes] = useState({})
 
     useEffect(() => {
-        saveCart(shoppingCart)
-    },[shoppingCart,saveCart])
-
-    useEffect(() => {
         axios.post('http://localhost:3000/login',adminConfig)
         .then((tokenData)=>{
         return {
