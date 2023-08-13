@@ -4,12 +4,10 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import adminConfig from "../config/admin.json";
 
-function NavBar() {
-  
+function NavBar({shoppingCart, saveCart}) {
   let [productTypes, setProductTypes] = useState(null)
 
   useEffect(() => {
-
     axios.post('http://localhost:3000/login',adminConfig)
     .then((tokenData)=>{
       return {
