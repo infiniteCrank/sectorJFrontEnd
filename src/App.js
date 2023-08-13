@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="App">
       <NavBar/>
-      <Route path="/" render={(props) => <Products text="Hello, " {...props} />} />
+      <Route path="/" render={(props) => <Products ref={productsRef} text="Hello, " {...props} />} />
     </div>
   );
 }

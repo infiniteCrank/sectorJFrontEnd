@@ -65,10 +65,7 @@ function Products() {
         const priceSplit = productsMap[productId].price.split(".")
         const dollars = parseInt(priceSplit[0].replace("$",""));
         let cents = parseInt(priceSplit[1]);
-        console.log("dollars:"+dollars);
-        console.log("cents:"+cents);
         cents += dollars*100
-        console.log(cents)
         shoppingCart[productId] = {
             "quantity": 1,
             "price_data": {
