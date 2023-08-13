@@ -6,16 +6,18 @@ import adminConfig from "../config/admin.json";
 import Image from '../Image/Image';
 import SizePicker from './SizePicker';
 
-function Products() {
+function Products({shoppingCart, saveCart}) {
     
     let [products, setProducts] = useState(null)
     let [productsMap, setProductsMap] = useState({})
     let [productImages, setProductImages] = useState(null)
     let [productSizes, setProductSizes] = useState({})
-    let [shoppingCart, setShoppingCart] = useState({})
 
     useEffect(() => {
+        saveCart(shoppingCart)
+    },[shoppingCart,saveCart])
 
+    useEffect(() => {
         axios.post('http://localhost:3000/login',adminConfig)
         .then((tokenData)=>{
         return {
@@ -78,8 +80,7 @@ function Products() {
                 }
             }
         }
-        setShoppingCart(shoppingCart)
-        console.log(shoppingCart)
+        saveCart(shoppingCart)
     }
 
     return (
