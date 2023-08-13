@@ -11,6 +11,7 @@ function Products() {
     let [products, setProducts] = useState(null)
     let [productImages, setProductImages] = useState(null)
     let [productSizes, setProductSizes] = useState({})
+    let [shoppingCart, setShoppingCart] = useState({})
 
     useEffect(() => {
 
