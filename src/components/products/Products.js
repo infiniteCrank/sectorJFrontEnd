@@ -9,6 +9,7 @@ import SizePicker from './SizePicker';
 function Products() {
     
     let [products, setProducts] = useState(null)
+    let [productsMap, setProductsMap] = useState({})
     let [productImages, setProductImages] = useState(null)
     let [productSizes, setProductSizes] = useState({})
     let [shoppingCart, setShoppingCart] = useState({})
@@ -25,7 +26,14 @@ function Products() {
         return axios.get('http://localhost:3000/products',config)
         })
         .then((response) =>{
-        setProducts(response.data)
+            const productData = response.data
+            const newProductMap = {}
+            for (let i in productData) {
+                const product = productData[i];
+                newProductMap[product._id] = product;
+            }
+            setProductsMap(newProductMap)
+            setProducts(productData)
         })
         .catch((err)=>{console.log(err)})
     },[])
@@ -52,6 +60,30 @@ function Products() {
         })
         .catch((err)=>{console.log(err)})
     },[])
+
+    const addToCart=(e,productId)=>{
+        const priceSplit = productsMap[productId].price.split(".")
+        const dollars = parseInt(priceSplit[0].replace("$",""));
+        let cents = parseInt(priceSplit[1]);
+        console.log("dollars:"+dollars);
+        console.log("cents:"+cents);
+        cents += dollars*100
+        console.log(cents)
+        shoppingCart[productId] = {
+            "quantity": 1,
+            "price_data": {
+                "currency": "usd",
+                "unit_amount": cents,
+                "product_data": {
+                    "name": productsMap[productId].name+"-"+productsMap[productId]._id,
+                    "description": productSizes[productId],
+                    "tax_code":"txcd_99999999"
+                }
+            }
+        }
+        setShoppingCart(shoppingCart)
+        console.log(shoppingCart)
+    }
 
     return (
     <div className="container">
@@ -82,7 +114,7 @@ function Products() {
                     </ul>
                     <div className='container-fluid'>
                         <Link className="btn btn-outline-dark" to={`product/${product._id}`}>View</Link>
-                        <button type="button" className="btn btn-danger">Add To Cart</button>
+                        <button type="button" onClick={(e)=>{addToCart(e,product._id)}} className="btn btn-danger">Add To Cart</button>
                     </div>
                 </div>
             </div>
