@@ -57,7 +57,9 @@ function NavBar({shoppingCart, saveCart}) {
         <button className="btn btn-outline-success" type="submit">Search</button>
       </form> */}
       <div className="d-flex">
-      <button className="btn btn-dark" onClick={handleViewCart}>View Cart</button>
+      <button className="btn btn-dark" onClick={handleViewCart}>
+        View Cart
+      </button>
       </div>
     </div>
   </div>
