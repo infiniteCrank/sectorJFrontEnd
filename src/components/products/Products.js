@@ -4,13 +4,13 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import adminConfig from "../config/admin.json";
 import Image from '../Image/Image';
-//import SizeChecker from './SizeChecker';
+import SizePicker from './SizePicker';
 
 function Products() {
     
     let [products, setProducts] = useState(null)
     let [productImages, setProductImages] = useState(null)
-    const [selectedSizes, setSelectedSizes] = useState({});
+    let [productSizes, setProductSizes] = useState({})
 
     useEffect(() => {
 
@@ -52,14 +52,6 @@ function Products() {
         .catch((err)=>{console.log(err)})
     },[])
 
-    const handleSizeChange = (event)=>{
-        const sizeChange = event.target.value
-        const sizeID = sizeChange.split("-")
-        selectedSizes[sizeID[1]] = sizeID[0]
-        setSelectedSizes(selectedSizes)
-        console.log(selectedSizes)
-    }
-
     return (
     <div className="container">
         <div className="row">
@@ -77,12 +69,13 @@ function Products() {
                     <h5 className="card-title">{product.name}</h5>
                     <p className="card-text">{product.description}</p>
                     <ul className="list-group list-group-flush">
-                        <li className="list-group-item">Sizes:
-                            {/* <SizeChecker 
-                            sizes={product.size} 
-                            productId={product._id} 
-                            selectedOption={selectedSizes} handleChange={handleSizeChange}/> */}
-                            SizePicker
+                        <li className="list-group-item">
+                            <SizePicker 
+                                sizes={product.size.split(",")}
+                                productId={product._id}
+                                productSizeState={productSizes}
+                                setProductSizeState={setProductSizes}
+                            />
                         </li>
                         <li className="list-group-item">Price: {product.price}</li>
                     </ul>

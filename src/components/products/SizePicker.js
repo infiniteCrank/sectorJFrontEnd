@@ -1,62 +1,48 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 
-export default class SizePicker extends React.Component {
+function SizePicker({
+    productId,
+    productSizeState,
+    setProductSizeState,
+    label='Select your t-shirt size',
+    outputLabel='You size is',
+    selectId='sizePicker',
+    sizes=['s', 'm', 'l', 'xl']}) {
 
-    static propTypes = {
-        label: React.PropTypes.string.isRequired,
-        outputLabel: React.PropTypes.string.isRequired,
-        selectId: React.PropTypes.string.isRequired,
-        sizes: React.PropTypes.arrayOf(React.PropTypes.string).isRequired
-    };
+    let [size, setSize] = useState(sizes[0])
+    useEffect(() => {
+        if(!(productSizeState[productId])){
+            productSizeState[productId]=sizes[0];
+            setProductSizeState(productSizeState)
+        }
+    })
 
-    static defaultProps = {
-        label: 'Select your t-shirt size',
-        outputLabel: 'You size is',
-        selectId: 'sizePicker',
-        sizes: ['s', 'm', 'l', 'xl']
-    };
-
-    static styles = {
+    const styles = {
         select: {
             marginLeft: '10px'
         }
     };
-
-    state = {
-        size: this.props.sizes[0]
-    };
-
-    constructor(props) {
-        super(props);
+    const handleChange = (event)=>{
+        const newSize=event.target.value;
+        setSize(newSize);
+        productSizeState[productId]=newSize;
+        setProductSizeState(productSizeState)
     }
+    return (
+        <div>
+            <label className="form-label" htmlFor={selectId}>{label}</label>
+            <select className="form-select" aria-label={"product size for "+productId} value={size} id={selectId} onChange={handleChange}
+                    style={styles.select}>
+                {sizes.map((size) => {
+                    return <option key={size} value={size}>{size.toUpperCase()}</option>;
+                })}
+            </select>
 
-    render() {
-        let {label, outputLabel, selectId, sizes} = this.props,
-            chosenSize = this.state.size;
+            <p className="text-muted"><small>{outputLabel} <strong>{size.toUpperCase()}</strong></small></p>
+        </div>
 
-        return (
-            <fildset>
-                <label htmlFor={selectId}>{label}</label>
-                <select value={chosenSize} id={selectId} onChange={this.setSize.bind(this)}
-                        style={SizePicker.styles.select}>
-                    {sizes.map((size) => {
-                        return <option key={size} value={size}>{size}</option>;
-                    })}
-                </select>
-
-                <p>{outputLabel} <strong>{chosenSize}</strong></p>
-            </fildset>
-
-        );
-    }
-
-    /**
-     * @desc sets chosen t-shirt size
-     * @param {Event} event - onChange event
-     */
-    setSize(event) {
-        this.setState({
-            size: event.target.value
-        });
-    }
+    );
 }
+
+export default SizePicker;
