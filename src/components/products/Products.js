@@ -92,7 +92,7 @@ function Products({shoppingCart, saveCart}) {
         {
         products && products.map(product => (
             <div key={product._id} className="card col-sm-12 col-md-4 col-lg-3">
-                <Image fileName={productImages && productImages[product.image]} alt={product.name} className="card-img-top"/>
+                <Image fileName={(productImages && productImages[product.image])} alt={product.name} className="card-img-top"/>
                 <div className="card-body">
                     <h5 className="card-title">{product.name}</h5>
                     <p className="card-text">{product.description}</p>

@@ -43,7 +43,8 @@ function NavBar({shoppingCart, saveCart}) {
     return count
   }
 
-  const BuildCartHtml = (cart)=>{
+  const BuildCartArray = (cart)=>{
+    const productCartArray = []
     for(let productId in cart){
       const product = cart[productId]
     }
