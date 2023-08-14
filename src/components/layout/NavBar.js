@@ -7,10 +7,15 @@ import adminConfig from "../config/admin.json";
 function NavBar({shoppingCart, saveCart}) {
   let [productTypes, setProductTypes] = useState(null)
   let [itemProductCount, setItemProductCount] = useState(0)
+  let [productCartArray, setProductCartArray] = useState([])
+  let [cartTotal, setCartTotal] = useState([])
+  let [cartTax, setCartTax] = useState([])
+  let [cartShipping, setCartShipping] = useState([])
 
   useEffect(() => {
     const productCount = countItems(shoppingCart)
     setItemProductCount(productCount)
+    buildCartArray(shoppingCart)
   },[shoppingCart])
 
   useEffect(() => {
@@ -43,11 +48,19 @@ function NavBar({shoppingCart, saveCart}) {
     return count
   }
 
-  const BuildCartArray = (cart)=>{
-    const productCartArray = []
+  const buildCartArray = (cart)=>{
+    let cartTotal = 0
+    const cartArray =[]
     for(let productId in cart){
-      const product = cart[productId]
+      const cartObject = cart[productId]
+      const product = cartObject.price_data
+      cartArray.push(product)
+      const productCents = parseInt(product.unit_amount)
+      cartTotal +=productCents;
     }
+    setProductCartArray(cartArray)
+    setCartTotal(cartTotal)
+    
   }
 
   return (
