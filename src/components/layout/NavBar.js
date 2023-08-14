@@ -73,13 +73,32 @@ function NavBar({shoppingCart, saveCart}) {
         <button className="btn btn-outline-success" type="submit">Search</button>
       </form> */}
       <div className="d-flex">
-      <button className="btn btn-dark" onClick={handleViewCart}>
+      <button className="btn btn-dark" onClick={handleViewCart} data-bs-toggle="modal" data-bs-target="#exampleModal">
         View Cart
         <span className="badge rounded-pill bg-danger">
           {itemProductCount}
           <span className="visually-hidden">Cart Items</span>
         </span>
       </button>
+
+      <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div className="modal-body">
+              ...
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" className="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       </div>
     </div>
   </div>
