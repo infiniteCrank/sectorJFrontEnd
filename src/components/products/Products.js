@@ -49,15 +49,15 @@ function Products({shoppingCart, saveCart}) {
         })
         .then((response) =>{
             const productImagesObject = response.data;
-            const productImages = {}
+            const newProductImages = {...productImages}
             for (let i in productImagesObject) {
                 const productImage = productImagesObject[i];
-                productImages[productImage._id] = productImage.name +"."+ productImage.imageType;
+                newProductImages[productImage._id] = productImage.name +"."+ productImage.imageType;
             }
-            setProductImages(productImages)
+            setProductImages(newProductImages)
         })
         .catch((err)=>{console.log(err)})
-    },[])
+    },[productImages])
 
     const addToCart=(e,productId)=>{
         const priceSplit = productsMap[productId].price.split(".")
@@ -92,7 +92,7 @@ function Products({shoppingCart, saveCart}) {
         {
         products && products.map(product => (
             <div key={product._id} className="card col-sm-12 col-md-4 col-lg-3">
-                <Image fileName={(productImages && productImages[product.image])} alt={product.name} className="card-img-top"/>
+                <Image fileName={(productImages && productImages[product.image])||"no-image.jpeg"} alt={product.name} className="card-img-top"/>
                 <div className="card-body">
                     <h5 className="card-title">{product.name}</h5>
                     <p className="card-text">{product.description}</p>

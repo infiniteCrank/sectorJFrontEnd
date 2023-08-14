@@ -49,17 +49,22 @@ function NavBar({shoppingCart, saveCart}) {
   }
 
   const buildCartArray = (cart)=>{
-    let cartTotal = 0
+    let cartSubTotal = 0
     const cartArray =[]
     for(let productId in cart){
       const cartObject = cart[productId]
       const product = cartObject.price_data
       cartArray.push(product)
       const productCents = parseInt(product.unit_amount)
-      cartTotal +=productCents;
+      cartSubTotal +=productCents;
     }
+    const cartTax = cartSubTotal *0.85
+    const cartShipping = 11
+    const cartGrandTotal = cartSubTotal+cartShipping+cartTax
     setProductCartArray(cartArray)
-    setCartTotal(cartTotal)
+    setCartTotal(cartGrandTotal)
+    setCartTax(cartTax)
+    setCartShipping(cartShipping)
     
   }
 
@@ -110,91 +115,32 @@ function NavBar({shoppingCart, saveCart}) {
             </div>
             <div className="modal-body">
             <ol className="list-group list-group-numbered">
+
+            {productCartArray && productCartArray.map(product => (
               <li className="list-group-item d-flex justify-content-between align-items-start">
-                <img src="..." className="img-thumbnail rounded float-start" alt="..."/>
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Subheading</div>
-                  Cras justo odio
-                </div>
-                <h2><span className="badge bg-secondary">$20</span></h2>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                <img src="..." className="img-thumbnail rounded float-start" alt="..."/>
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Subheading</div>
-                  Cras justo odio
-                </div>
-                <h2><span className="badge bg-secondary">$20</span></h2>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                <img src="..." className="img-thumbnail rounded float-start" alt="..."/>
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Subheading</div>
-                  Cras justo odio
-                </div>
-                <h2><span className="badge bg-secondary">$20</span></h2>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                <img src="..." className="img-thumbnail rounded float-start" alt="..."/>
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Subheading</div>
-                  Cras justo odio
-                </div>
-                <h2><span className="badge bg-secondary">$20</span></h2>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                <img src="..." className="img-thumbnail rounded float-start" alt="..."/>
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Subheading</div>
-                  Cras justo odio
-                </div>
-                <h2><span className="badge bg-secondary">$20</span></h2>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                <img src="..." className="img-thumbnail rounded float-start" alt="..."/>
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Subheading</div>
-                  Cras justo odio
-                </div>
-                <h2><span className="badge bg-secondary">$20</span></h2>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                <img src="..." className="img-thumbnail rounded float-start" alt="..."/>
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Subheading</div>
-                  Cras justo odio
-                </div>
-                <h2><span className="badge bg-secondary">$20</span></h2>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                <img src="..." className="img-thumbnail rounded float-start" alt="..."/>
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Subheading</div>
-                  Cras justo odio
-                </div>
-                <h2><span className="badge bg-secondary">$20</span></h2>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                <img src="..." className="img-thumbnail rounded float-start" alt="..."/>
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Subheading</div>
-                  Cras justo odio
-                </div>
-                <h2><span className="badge bg-secondary">$20</span></h2>
-              </li>
+              <img src="..." className="img-thumbnail rounded float-start" alt="..."/>
+              <div className="ms-2 me-auto">
+                <div className="fw-bold">Subheading</div>
+                Cras justo odio
+              </div>
+              <h2><span className="badge bg-secondary">${parseInt(product.unit_amount)/100}</span></h2>
+            </li>
+            ))}
+
+              
             </ol>
             <ul className="list-group list-group-flush">
                 <li className="list-group-item d-flex justify-content-between align-items-start">
                   <div className="fw-bold">Tax:</div>
-                  <h2><span className="badge bg-secondary">$20</span></h2>
+                  <h2><span className="badge bg-secondary">${cartTax}</span></h2>
                 </li>
                 <li className="list-group-item d-flex justify-content-between align-items-start">
                   <div className="fw-bold">Shipping:</div>
-                  <h2><span className="badge bg-secondary">$20</span></h2>
+                  <h2><span className="badge bg-secondary">${cartShipping}</span></h2>
                 </li>
                 <li className="list-group-item d-flex justify-content-between align-items-start">
                   <div className="fw-bold">Total:</div>
-                  <h2><span className="badge bg-secondary">$20</span></h2>
+                  <h2><span className="badge bg-secondary">${cartTotal}</span></h2>
                 </li>
             </ul>
             </div>
