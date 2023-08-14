@@ -35,7 +35,7 @@ function NavBar({shoppingCart, saveCart}) {
   },[])
 
   const handleViewCart = (e)=>{
-    console.log(shoppingCart)
+    //console.log(shoppingCart)
   }
 
   const countItems = (cart)=>{
@@ -54,13 +54,16 @@ function NavBar({shoppingCart, saveCart}) {
     for(let productId in cart){
       const cartObject = cart[productId]
       const product = cartObject.price_data
+      console.log(product)
       cartArray.push(product)
       const productCents = parseInt(product.unit_amount)
       cartSubTotal +=productCents;
     }
-    const cartTax = cartSubTotal *0.85
+    const dollarAndCents = cartSubTotal/100
+    let cartTax = dollarAndCents *0.085
+    cartTax = (Math.round(cartTax*Math.pow(10,2))/Math.pow(10,2)).toFixed(2)
     const cartShipping = 11
-    const cartGrandTotal = cartSubTotal+cartShipping+cartTax
+    const cartGrandTotal = parseFloat(dollarAndCents+cartShipping) + parseFloat(cartTax)
     setProductCartArray(cartArray)
     setCartTotal(cartGrandTotal)
     setCartTax(cartTax)
@@ -69,44 +72,50 @@ function NavBar({shoppingCart, saveCart}) {
   }
 
   return (
-  <nav className="navbar sticky-top navbar-expand-lg navbar-light bg-light">
-  <div className="container-fluid">
-    <Link className="navbar-brand" to="/">
-          <img src={process.env.PUBLIC_URL + '/wizduds-logo-small.png'} alt="Wizduds - Extraordinary Clothing" height={100}/>
-    </Link>
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-        <li className="nav-item">
-        <Link className="nav-link active" to="/">Home</Link>
-        </li>
-        <li className="nav-item dropdown">
-          <button className="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            Products
-          </button>
-          <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-            {productTypes && productTypes.map((productType) => {
-                return <li key={productType.name} >{productType.name}</li>
-            })}
-          </ul>
-        </li>
-      </ul>
-      {/* <form className="d-flex">
-        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button className="btn btn-outline-success" type="submit">Search</button>
-      </form> */}
-      <div className="d-flex">
-      <button className="btn btn-dark" onClick={handleViewCart} data-bs-toggle="modal" data-bs-target="#exampleModal">
-        View Cart
-        <span className="badge rounded-pill bg-danger">
-          {itemProductCount}
-          <span className="visually-hidden">Cart Items</span>
-        </span>
+<div>
+    <nav className="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+    <div className="container-fluid">
+      <Link className="navbar-brand" to="/">
+            <img src={process.env.PUBLIC_URL + '/wizduds-logo-small.png'} alt="Wizduds - Extraordinary Clothing" height={100}/>
+      </Link>
+      <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span className="navbar-toggler-icon"></span>
       </button>
+      <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          <li className="nav-item">
+          <Link className="nav-link active" to="/">Home</Link>
+          </li>
+          <li className="nav-item dropdown">
+            <button className="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              Products
+            </button>
+            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+              {productTypes && productTypes.map((productType) => {
+                  return <li key={productType.name} >{productType.name}</li>
+              })}
+            </ul>
+          </li>
+        </ul>
+        {/* <form className="d-flex">
+          <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+          <button className="btn btn-outline-success" type="submit">Search</button>
+        </form> */}
+        <div className="d-flex">
+        <button className="btn btn-dark" onClick={handleViewCart} data-bs-toggle="modal" data-bs-target="#exampleModal">
+          View Cart
+          <span className="badge rounded-pill bg-danger">
+            {itemProductCount}
+            <span className="visually-hidden">Cart Items</span>
+          </span>
+        </button>
+        </div>
+      </div>
+    </div>
+    </nav>
 
-      <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-scrollable">
           <div className="modal-content">
             <div className="modal-header">
@@ -114,33 +123,41 @@ function NavBar({shoppingCart, saveCart}) {
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
-            <ol className="list-group list-group-numbered">
+            <ul className="list-group">
 
-            {productCartArray && productCartArray.map(product => (
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-              <img src="..." className="img-thumbnail rounded float-start" alt="..."/>
-              <div className="ms-2 me-auto">
-                <div className="fw-bold">Subheading</div>
-                Cras justo odio
-              </div>
-              <h2><span className="badge bg-secondary">${parseInt(product.unit_amount)/100}</span></h2>
-            </li>
-            ))}
-
+              {productCartArray && productCartArray.map(product => (
+                <li 
+                  key={product.product_data.name.split("-")[1]} 
+                  className="list-group-item d-flex justify-content-between align-items-start"
+                >
+                <img src="..." className="img-thumbnail rounded float-start" alt="..."/>
+                <div className="ms-2 me-auto">
+                  <div className="fw-bold">{product.product_data.name.split("-")[0]}</div>
+                  {product.product_data.description}
+                </div>
+                <h4><span className="badge bg-secondary">${parseInt(product.unit_amount)/100}</span></h4>
+              </li>
+              ))}
               
-            </ol>
+            </ul>
             <ul className="list-group list-group-flush">
                 <li className="list-group-item d-flex justify-content-between align-items-start">
-                  <div className="fw-bold">Tax:</div>
-                  <h2><span className="badge bg-secondary">${cartTax}</span></h2>
+                  <div className="ms-2 me-auto">
+                    <div className="fw-bold">Tax:</div>
+                    We charge Virginia state sales tax.
+                  </div>
+                  <h4><span className="badge bg-secondary">${cartTax}</span></h4>
                 </li>
                 <li className="list-group-item d-flex justify-content-between align-items-start">
-                  <div className="fw-bold">Shipping:</div>
-                  <h2><span className="badge bg-secondary">${cartShipping}</span></h2>
+                  <div className="ms-2 me-auto">
+                      <div className="fw-bold">Shipping:</div>
+                      We ship with USPS flat rate shipping in USA and Canada only.
+                  </div>
+                  <h4><span className="badge bg-secondary">${cartShipping}</span></h4>
                 </li>
                 <li className="list-group-item d-flex justify-content-between align-items-start">
                   <div className="fw-bold">Total:</div>
-                  <h2><span className="badge bg-secondary">${cartTotal}</span></h2>
+                  <h4><span className="badge bg-secondary">${cartTotal}</span></h4>
                 </li>
             </ul>
             </div>
@@ -152,10 +169,8 @@ function NavBar({shoppingCart, saveCart}) {
         </div>
       </div>
 
-      </div>
-    </div>
-  </div>
-  </nav>
+
+</div>
   );
 }
 
