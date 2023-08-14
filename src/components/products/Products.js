@@ -72,7 +72,7 @@ function Products({shoppingCart, saveCart}) {
                 "unit_amount": cents,
                 "product_data": {
                     "name": productsMap[productId].name+"-"+productsMap[productId]._id,
-                    "description": productSizes[productId],
+                    "description": productSizes[productId]+"-"+productsMap[productId].description.substring(0,80) + "...",
                     "tax_code":"txcd_99999999"
                 }
             }
