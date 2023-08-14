@@ -25,7 +25,7 @@ function Products({shoppingCart, saveCart}) {
         })
         .then((response) =>{
             const productData = response.data
-            const newProductMap = {}
+            const newProductMap = {...productsMap}
             for (let i in productData) {
                 const product = productData[i];
                 newProductMap[product._id] = product;
@@ -34,7 +34,7 @@ function Products({shoppingCart, saveCart}) {
             setProducts(productData)
         })
         .catch((err)=>{console.log(err)})
-    },[])
+    },[productsMap])
 
     useEffect(() => {
 
