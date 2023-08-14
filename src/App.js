@@ -10,7 +10,6 @@ function App() {
 
   const saveCart = (data)=>{
     setShoppingCart(data);
-    console.log(shoppingCart)
   }
   return (
     <div className="App">

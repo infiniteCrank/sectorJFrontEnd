@@ -64,7 +64,8 @@ function Products({shoppingCart, saveCart}) {
         const dollars = parseInt(priceSplit[0].replace("$",""));
         let cents = parseInt(priceSplit[1]);
         cents += dollars*100
-        shoppingCart[productId] = {
+        const newCart = {...shoppingCart}
+        newCart[productId]= {
             "quantity": 1,
             "price_data": {
                 "currency": "usd",
@@ -76,7 +77,7 @@ function Products({shoppingCart, saveCart}) {
                 }
             }
         }
-        saveCart(shoppingCart)
+        saveCart(newCart)
     }
 
     return (

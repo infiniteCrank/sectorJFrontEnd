@@ -6,6 +6,12 @@ import adminConfig from "../config/admin.json";
 
 function NavBar({shoppingCart, saveCart}) {
   let [productTypes, setProductTypes] = useState(null)
+  let [itemProductCount, setItemProductCount] = useState(0)
+
+  useEffect(() => {
+    const productCount = countItems(shoppingCart)
+    setItemProductCount(productCount)
+  },[shoppingCart])
 
   useEffect(() => {
     axios.post('http://localhost:3000/login',adminConfig)
@@ -25,6 +31,16 @@ function NavBar({shoppingCart, saveCart}) {
 
   const handleViewCart = (e)=>{
     console.log(shoppingCart)
+  }
+
+  const countItems = (cart)=>{
+    let count = 0
+    for(let key in cart){
+      if(key){
+        count++
+      }
+    }
+    return count
   }
 
   return (
@@ -59,6 +75,10 @@ function NavBar({shoppingCart, saveCart}) {
       <div className="d-flex">
       <button className="btn btn-dark" onClick={handleViewCart}>
         View Cart
+        <span className="badge rounded-pill bg-danger">
+          {itemProductCount}
+          <span className="visually-hidden">Cart Items</span>
+        </span>
       </button>
       </div>
     </div>
