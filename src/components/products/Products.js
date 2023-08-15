@@ -11,16 +11,10 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
     const addToCart=(e,productId)=>{
 
         //update quantity
-
         const productSizeChosen = productSizes[productId]
-        console.log(productSizeChosen)
         const productQuantities = {...quantityMap}
         const productQty = productQuantities[productId][productSizeChosen]
-        console.log("before:")
-        console.log(productQty)
         productQuantities[productId][productSizeChosen] = productQty-1
-        console.log("after:")
-        console.log(productQuantities[productId][productSizeChosen])
 
         //change dollars back to cents for stripe
         const priceSplit = productsMap[productId].price.split(".")
@@ -47,14 +41,22 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
             }
         }else{
             // add to qty in cart: 
-            console.log("add to qty")
             newCart[productId].quantity ++;
             newCart[productId].price_data.product_data.description = 
             productSizeChosen +","+newCart[productId].price_data.product_data.description;
-            console.log(newCart[productId])
         }
         
         saveCart(newCart)
+    }
+    const checkQuantities = (productId)=>{
+        const quantities = quantityMap[productId]
+        let someLeft = false
+        for(let size in quantities){
+            if(quantities[size]>0){
+                someLeft = true
+            }
+        }
+        return someLeft
     }
 
     return (
@@ -87,7 +89,14 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
                     </ul>
                     <div className='container-fluid'>
                         <Link className="btn btn-outline-dark" to={`product/${product._id}`}>View</Link>
-                        <button type="button" onClick={(e)=>{addToCart(e,product._id)}} className="btn btn-danger">Add To Cart</button>
+                        <button 
+                            type="button" 
+                            onClick={(e)=>{addToCart(e,product._id)}} 
+                            className="btn btn-danger"
+                            disabled={!(checkQuantities(product._id))}
+                        >
+                            Add To Cart
+                        </button>
                     </div>
                 </div>
             </div>
