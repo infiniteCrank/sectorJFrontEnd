@@ -169,14 +169,25 @@ function NavBar({shoppingCart, saveCart}) {
                   {getProductDescription(product.product_data.description)}
                   <span className="badge bg-dark">Size: {getProductSize(product.product_data.description)}</span>
                 </div>
-                <h4><span className="badge bg-secondary">${(parseInt(product.unit_amount)*parseInt(product.quantity))/100}</span></h4>
-                <button 
-                onClick={(e)=>{removeItem(getProductId(product.product_data.name))}}
-                type="button" 
-                className="btn btn-outline-secondary btn-sm"
-                >
-                  Remove
-                </button>
+
+                <div class="btn-group-vertical">
+                  <h4>
+                    <span className="badge bg-secondary">
+                      ${(parseInt(product.unit_amount)*parseInt(product.quantity))/100}
+                    </span>
+                  </h4>
+                  
+                  <span className="badge bg-dark">Qty: {product.quantity}</span>
+                  
+                  <button 
+                  onClick={(e)=>{removeItem(getProductId(product.product_data.name))}}
+                  type="button" 
+                  className="btn btn-outline-secondary btn-sm mt-2"
+                  >
+                    Remove
+                  </button>
+                </div>
+
               </li>
               ))}
               
