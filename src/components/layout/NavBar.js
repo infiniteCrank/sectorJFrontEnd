@@ -71,6 +71,25 @@ function NavBar({shoppingCart, saveCart}) {
     
   }
 
+  const getProductImageName =(productTitle)=>{
+    return productTitle.split("---")[2]
+  }
+  const getProductId =(productTitle)=>{
+    return productTitle.split("---")[1]
+  }
+
+  const getProductTitle =(productTitle)=>{
+    return productTitle.split("---")[0]
+  }
+
+  const getProductDescription =(productDesc)=>{
+    return productDesc.split("---")[1]
+  }
+
+  const getProductSize =(productDesc)=>{
+    return productDesc.split("---")[0].toUpperCase()
+  }
+
   return (
 <div>
     <nav className="navbar sticky-top navbar-expand-lg navbar-light bg-light">
@@ -127,13 +146,14 @@ function NavBar({shoppingCart, saveCart}) {
 
               {productCartArray && productCartArray.map(product => (
                 <li 
-                  key={product.product_data.name.split("-")[1]} 
+                  key={getProductId(product.product_data.name)} 
                   className="list-group-item d-flex justify-content-between align-items-start"
                 >
-                <img src="..." className="img-thumbnail rounded float-start" alt="..."/>
+                <img src="..." className="img-thumbnail rounded float-start" alt="..." width={300} height={300}/>
                 <div className="ms-2 me-auto">
-                  <div className="fw-bold">{product.product_data.name.split("-")[0]}</div>
-                  {product.product_data.description}
+                  <div className="fw-bold">{getProductTitle(product.product_data.name)}</div>
+                  {getProductDescription(product.product_data.description)}
+                  <span className="badge bg-dark">Size: {getProductSize(product.product_data.description)}</span>
                 </div>
                 <h4><span className="badge bg-secondary">${parseInt(product.unit_amount)/100}</span></h4>
               </li>
@@ -163,7 +183,7 @@ function NavBar({shoppingCart, saveCart}) {
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-danger">Checkout</button>
+              <button type="button" className="btn btn-danger">Checkout Total:${cartTotal}</button>
             </div>
           </div>
         </div>
