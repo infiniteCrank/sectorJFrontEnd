@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from '../Image/Image';
 import SizePicker from './SizePicker';
 
-function Products({shoppingCart, saveCart, productsMap, products}) {
+function Products({shoppingCart, saveCart, productsMap, products, quantityMap, saveQuantity}) {
     
     let [productSizes, setProductSizes] = useState({})
 
@@ -50,6 +50,7 @@ function Products({shoppingCart, saveCart, productsMap, products}) {
                     <ul className="list-group list-group-flush">
                         <li className="list-group-item">
                             <SizePicker 
+                                quantityMap={quantityMap}
                                 sizes={product.size.split(",")}
                                 productId={product._id}
                                 productSizeState={productSizes}

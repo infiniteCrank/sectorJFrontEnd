@@ -9,13 +9,17 @@ import adminConfig from "./components/config/admin.json";
 
 function App() {
   let [shoppingCart, setShoppingCart] = useState({})
+  let [products, setProducts] = useState(null)
+  let [productsMap, setProductsMap] = useState({})
+  let [quantityMap, setQuantityMap] = useState({})
 
   const saveCart = (data)=>{
     setShoppingCart(data);
   }
 
-  let [products, setProducts] = useState(null)
-  let [productsMap, setProductsMap] = useState({})
+  const saveQuantity = (data)=>{
+    setQuantityMap(data);
+  }
 
   useEffect(() => {
     axios.post('http://localhost:3000/login',adminConfig)
@@ -30,10 +34,13 @@ function App() {
     .then((response) =>{
         const productData = response.data
         const newProductMap = {}
+        const newQuantityMap = {}
         for (let i in productData) {
             const product = productData[i];
             newProductMap[product._id] = product;
+            newQuantityMap[product._id] = product.quantity;
         }
+        setQuantityMap(newQuantityMap)
         setProductsMap(newProductMap)
         setProducts(productData)
     })
@@ -46,9 +53,13 @@ function App() {
         shoppingCart={shoppingCart} 
         saveCart={saveCart} 
         productsMap={productsMap}
+        quantityMap={quantityMap}
+        saveQuantity={saveQuantity}
       />
       <Route path="/" render={(props) => 
       <Products 
+          quantityMap={quantityMap}
+          saveQuantity={saveQuantity}
           shoppingCart={shoppingCart} 
           products={products}
           productsMap={productsMap}
