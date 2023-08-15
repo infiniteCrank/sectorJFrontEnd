@@ -1,56 +1,35 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import adminConfig from "../config/admin.json";
+import { useState } from 'react';
 import Image from '../Image/Image';
 import SizePicker from './SizePicker';
 
-function Products() {
+function Products({shoppingCart, saveCart, productImages, productsMap, products}) {
     
-    let [products, setProducts] = useState(null)
-    let [productImages, setProductImages] = useState(null)
     let [productSizes, setProductSizes] = useState({})
 
-    useEffect(() => {
-
-        axios.post('http://localhost:3000/login',adminConfig)
-        .then((tokenData)=>{
-        return {
-            headers: {'Authorization': tokenData.data.token},
-        }
-        })
-        .then((config)=>{
-        return axios.get('http://localhost:3000/products',config)
-        })
-        .then((response) =>{
-        setProducts(response.data)
-        })
-        .catch((err)=>{console.log(err)})
-    },[])
-
-    useEffect(() => {
-
-        axios.post('http://localhost:3000/login',adminConfig)
-        .then((tokenData)=>{
-        return {
-            headers: {'Authorization': tokenData.data.token},
-        }
-        })
-        .then((config)=>{
-        return axios.get('http://localhost:3000/product/images',config)
-        })
-        .then((response) =>{
-            const productImagesObject = response.data;
-            const productImages = {}
-            for (let i in productImagesObject) {
-                const productImage = productImagesObject[i];
-                productImages[productImage._id] = productImage.name +"."+ productImage.imageType;
+    const addToCart=(e,productId)=>{
+        const priceSplit = productsMap[productId].price.split(".")
+        const dollars = parseInt(priceSplit[0].replace("$",""));
+        let cents = parseInt(priceSplit[1]);
+        cents += dollars*100
+        const newCart = {...shoppingCart}
+        newCart[productId]= {
+            "quantity": 1,
+            "price_data": {
+                "currency": "usd",
+                "unit_amount": cents,
+                "product_data": {
+                    "name": productsMap[productId].name+"---"+
+                            productsMap[productId]._id+"---"+
+                            productImages[productsMap[productId].image],
+                    "description": productSizes[productId]+"---"+productsMap[productId].description.substring(0,80) + "...",
+                    "tax_code":"txcd_99999999"
+                }
             }
-            setProductImages(productImages)
-        })
-        .catch((err)=>{console.log(err)})
-    },[])
+        }
+        saveCart(newCart)
+    }
 
     return (
     <div className="container">
@@ -81,7 +60,7 @@ function Products() {
                     </ul>
                     <div className='container-fluid'>
                         <Link className="btn btn-outline-dark" to={`product/${product._id}`}>View</Link>
-                        <button type="button" className="btn btn-danger">Add To Cart</button>
+                        <button type="button" onClick={(e)=>{addToCart(e,product._id)}} className="btn btn-danger">Add To Cart</button>
                     </div>
                 </div>
             </div>
