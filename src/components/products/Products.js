@@ -11,8 +11,10 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
     const addToCart=(e,productId)=>{
 
         //update quantity
-        const productQuantities = {...quantityMap}
+
         const productSizeChosen = productSizes[productId]
+        console.log(productSizeChosen)
+        const productQuantities = {...quantityMap}
         const productQty = productQuantities[productId][productSizeChosen]
         console.log("before:")
         console.log(productQty)
@@ -45,8 +47,12 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
                 }
             }
         }else{
-            // add to qty in cart 
+            // add to qty in cart: 
             console.log("add to qty")
+            newCart[productId].quantity ++;
+            newCart[productId].price_data.product_data.description = 
+            productSizeChosen +","+newCart[productId].price_data.product_data.description;
+            console.log(newCart[productId])
         }
         
         saveCart(newCart)
