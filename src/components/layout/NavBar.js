@@ -51,8 +51,10 @@ function NavBar({shoppingCart, saveCart}) {
 
   const buildCartArray = (cart)=>{
     let cartSubTotal = 0
+    let ItemCount = 0
     const cartArray =[]
     for(let productId in cart){
+      ItemCount++
       const cartObject = cart[productId]
       const product = cartObject.price_data
       cartArray.push(product)
@@ -62,7 +64,7 @@ function NavBar({shoppingCart, saveCart}) {
     const dollarAndCents = cartSubTotal/100
     let cartTax = dollarAndCents *0.085
     cartTax = (Math.round(cartTax*Math.pow(10,2))/Math.pow(10,2)).toFixed(2)
-    const cartShipping = 11
+    const cartShipping = (ItemCount>0)?11:0;
     const cartGrandTotal = parseFloat(dollarAndCents+cartShipping) + parseFloat(cartTax)
     setProductCartArray(cartArray)
     setCartTotal(cartGrandTotal)
