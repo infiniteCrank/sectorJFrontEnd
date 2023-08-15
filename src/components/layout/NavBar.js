@@ -5,7 +5,7 @@ import axios from 'axios';
 import adminConfig from "../config/admin.json";
 import Image from '../Image/Image';
 
-function NavBar({shoppingCart, saveCart}) {
+function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity}) {
   let [productTypes, setProductTypes] = useState(null)
   let [itemProductCount, setItemProductCount] = useState(0)
   let [productCartArray, setProductCartArray] = useState([])
@@ -94,7 +94,15 @@ function NavBar({shoppingCart, saveCart}) {
   }
 
   const removeItem = (itemId)=>{
+    const newQtyMap = {...quantityMap}
     const newCart = {...shoppingCart}
+    const sizes = newCart[itemId].price_data.product_data.description.split("---")[0]
+    const sizesToAddBack = sizes.split(",")
+    for(let i in sizesToAddBack){
+      const sizeToAdd = sizesToAddBack[i];
+      newQtyMap[itemId][sizeToAdd] ++
+    }
+    saveQuantity(newQtyMap)
     delete newCart[itemId]
     saveCart(newCart)
   }
