@@ -29,7 +29,6 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
         cents += dollars*100
 
         const newCart = {...shoppingCart}
-        //TODO: check for duplicate ids and update qty on cart remove
         if(!(productId in newCart)){
             // this is a new item
             newCart[productId]= {
