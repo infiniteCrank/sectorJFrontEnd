@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from '../Image/Image';
 import SizePicker from './SizePicker';
 
-function Products({shoppingCart, saveCart, productImages, productsMap, products}) {
+function Products({shoppingCart, saveCart, productsMap, products}) {
     
     let [productSizes, setProductSizes] = useState({})
 
@@ -22,7 +22,7 @@ function Products({shoppingCart, saveCart, productImages, productsMap, products}
                 "product_data": {
                     "name": productsMap[productId].name+"---"+
                             productsMap[productId]._id+"---"+
-                            productImages[productsMap[productId].image],
+                            productsMap[productId].image+".jpeg",
                     "description": productSizes[productId]+"---"+productsMap[productId].description.substring(0,80) + "...",
                     "tax_code":"txcd_99999999"
                 }
@@ -43,7 +43,7 @@ function Products({shoppingCart, saveCart, productImages, productsMap, products}
         {
         products && products.map(product => (
             <div key={product._id} className="card col-sm-12 col-md-4 col-lg-3">
-                <Image fileName={(productImages && productImages[product.image])||"no-image.jpeg"} alt={product.name} className="card-img-top"/>
+                <Image fileName={(product.image && product.image + ".jpeg")||"no-image.jpeg"} alt={product.name} className="card-img-top"/>
                 <div className="card-body">
                     <h5 className="card-title">{product.name}</h5>
                     <p className="card-text">{product.description}</p>

@@ -55,7 +55,6 @@ function NavBar({shoppingCart, saveCart}) {
     for(let productId in cart){
       const cartObject = cart[productId]
       const product = cartObject.price_data
-      console.log(product)
       cartArray.push(product)
       const productCents = parseInt(product.unit_amount)
       cartSubTotal +=productCents;
