@@ -51,8 +51,10 @@ function NavBar({shoppingCart, saveCart}) {
 
   const buildCartArray = (cart)=>{
     let cartSubTotal = 0
+    let ItemCount = 0
     const cartArray =[]
     for(let productId in cart){
+      ItemCount++
       const cartObject = cart[productId]
       const product = cartObject.price_data
       cartArray.push(product)
@@ -62,7 +64,7 @@ function NavBar({shoppingCart, saveCart}) {
     const dollarAndCents = cartSubTotal/100
     let cartTax = dollarAndCents *0.085
     cartTax = (Math.round(cartTax*Math.pow(10,2))/Math.pow(10,2)).toFixed(2)
-    const cartShipping = 11
+    const cartShipping = (ItemCount>0)?11:0;
     const cartGrandTotal = parseFloat(dollarAndCents+cartShipping) + parseFloat(cartTax)
     setProductCartArray(cartArray)
     setCartTotal(cartGrandTotal)
@@ -88,6 +90,12 @@ function NavBar({shoppingCart, saveCart}) {
 
   const getProductSize =(productDesc)=>{
     return productDesc.split("---")[0].toUpperCase()
+  }
+
+  const removeItem = (itemId)=>{
+    const newCart = {...shoppingCart}
+    delete newCart[itemId]
+    saveCart(newCart)
   }
 
   return (
@@ -161,6 +169,13 @@ function NavBar({shoppingCart, saveCart}) {
                   <span className="badge bg-dark">Size: {getProductSize(product.product_data.description)}</span>
                 </div>
                 <h4><span className="badge bg-secondary">${parseInt(product.unit_amount)/100}</span></h4>
+                <button 
+                onClick={(e)=>{removeItem(getProductId(product.product_data.name))}}
+                type="button" 
+                className="btn btn-outline-secondary btn-sm"
+                >
+                  Remove
+                </button>
               </li>
               ))}
               
@@ -188,7 +203,13 @@ function NavBar({shoppingCart, saveCart}) {
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-danger">Checkout Total: ${cartTotal}</button>
+              <button 
+              disabled={(itemProductCount===0)?true:false}
+              type="button" 
+              className="btn btn-danger"
+              >
+                Checkout Total: ${cartTotal}
+              </button>
             </div>
           </div>
         </div>
