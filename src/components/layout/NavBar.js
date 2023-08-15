@@ -5,7 +5,7 @@ import axios from 'axios';
 import adminConfig from "../config/admin.json";
 import Image from '../Image/Image';
 
-function NavBar({shoppingCart, saveCart}) {
+function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity}) {
   let [productTypes, setProductTypes] = useState(null)
   let [itemProductCount, setItemProductCount] = useState(0)
   let [productCartArray, setProductCartArray] = useState([])
@@ -43,7 +43,7 @@ function NavBar({shoppingCart, saveCart}) {
     let count = 0
     for(let key in cart){
       if(key){
-        count++
+        count = count + cart[key].quantity
       }
     }
     return count
@@ -57,9 +57,11 @@ function NavBar({shoppingCart, saveCart}) {
       ItemCount++
       const cartObject = cart[productId]
       const product = cartObject.price_data
+      product["quantity"] = cartObject.quantity;
       cartArray.push(product)
       const productCents = parseInt(product.unit_amount)
-      cartSubTotal +=productCents;
+      const itemQty = cartObject.quantity
+      cartSubTotal +=(productCents *itemQty);
     }
     const dollarAndCents = cartSubTotal/100
     let cartTax = dollarAndCents *0.085
@@ -70,7 +72,6 @@ function NavBar({shoppingCart, saveCart}) {
     setCartTotal(cartGrandTotal)
     setCartTax(cartTax)
     setCartShipping(cartShipping)
-    
   }
 
   const getProductImageName =(productTitle)=>{
@@ -93,7 +94,15 @@ function NavBar({shoppingCart, saveCart}) {
   }
 
   const removeItem = (itemId)=>{
+    const newQtyMap = {...quantityMap}
     const newCart = {...shoppingCart}
+    const sizes = newCart[itemId].price_data.product_data.description.split("---")[0]
+    const sizesToAddBack = sizes.split(",")
+    for(let i in sizesToAddBack){
+      const sizeToAdd = sizesToAddBack[i];
+      newQtyMap[itemId][sizeToAdd] ++
+    }
+    saveQuantity(newQtyMap)
     delete newCart[itemId]
     saveCart(newCart)
   }
@@ -166,16 +175,27 @@ function NavBar({shoppingCart, saveCart}) {
                 <div className="ms-2 me-auto">
                   <div className="fw-bold">{getProductTitle(product.product_data.name)}</div>
                   {getProductDescription(product.product_data.description)}
-                  <span className="badge bg-dark">Size: {getProductSize(product.product_data.description)}</span>
+                  <span className="badge bg-dark">Sizes: {getProductSize(product.product_data.description)}</span>
                 </div>
-                <h4><span className="badge bg-secondary">${parseInt(product.unit_amount)/100}</span></h4>
-                <button 
-                onClick={(e)=>{removeItem(getProductId(product.product_data.name))}}
-                type="button" 
-                className="btn btn-outline-secondary btn-sm"
-                >
-                  Remove
-                </button>
+
+                <div className="btn-group-vertical">
+                  <h4>
+                    <span className="badge bg-secondary">
+                      ${(parseInt(product.unit_amount)*parseInt(product.quantity))/100}
+                    </span>
+                  </h4>
+                  
+                  <span className="badge bg-dark">Qty: {product.quantity}</span>
+                  
+                  <button 
+                  onClick={(e)=>{removeItem(getProductId(product.product_data.name))}}
+                  type="button" 
+                  className="btn btn-outline-secondary btn-sm mt-2"
+                  >
+                    Remove
+                  </button>
+                </div>
+
               </li>
               ))}
               
