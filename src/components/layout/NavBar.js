@@ -203,7 +203,13 @@ function NavBar({shoppingCart, saveCart}) {
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-danger">Checkout Total: ${cartTotal}</button>
+              <button 
+              disabled={(itemProductCount===0)?true:false}
+              type="button" 
+              className="btn btn-danger"
+              >
+                Checkout Total: ${cartTotal}
+              </button>
             </div>
           </div>
         </div>
