@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import adminConfig from "../config/admin.json";
+import Image from '../Image/Image';
 
 function NavBar({shoppingCart, saveCart}) {
   let [productTypes, setProductTypes] = useState(null)
@@ -149,7 +150,12 @@ function NavBar({shoppingCart, saveCart}) {
                   key={getProductId(product.product_data.name)} 
                   className="list-group-item d-flex justify-content-between align-items-start"
                 >
-                <img src="..." className="img-thumbnail rounded float-start" alt="..." width={300} height={300}/>
+                <Image 
+                  fileName={(getProductImageName(product.product_data.name))||"no-image.jpeg"} 
+                  alt={product.product_data.name} 
+                  className="img-thumbnail rounded float-start"
+                  thumbnail={true}
+                  />
                 <div className="ms-2 me-auto">
                   <div className="fw-bold">{getProductTitle(product.product_data.name)}</div>
                   {getProductDescription(product.product_data.description)}
@@ -183,7 +189,7 @@ function NavBar({shoppingCart, saveCart}) {
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-danger">Checkout Total:${cartTotal}</button>
+              <button type="button" className="btn btn-danger">Checkout Total: ${cartTotal}</button>
             </div>
           </div>
         </div>
