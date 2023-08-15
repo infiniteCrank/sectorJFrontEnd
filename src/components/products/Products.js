@@ -1,63 +1,12 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import adminConfig from "../config/admin.json";
+import { useState } from 'react';
 import Image from '../Image/Image';
 import SizePicker from './SizePicker';
 
-function Products({shoppingCart, saveCart}) {
+function Products({shoppingCart, saveCart, productImages, productsMap, products}) {
     
-    let [products, setProducts] = useState(null)
-    let [productsMap, setProductsMap] = useState({})
-    let [productImages, setProductImages] = useState(null)
     let [productSizes, setProductSizes] = useState({})
-
-    useEffect(() => {
-        axios.post('http://localhost:3000/login',adminConfig)
-        .then((tokenData)=>{
-        return {
-            headers: {'Authorization': tokenData.data.token},
-        }
-        })
-        .then((config)=>{
-        return axios.get('http://localhost:3000/products',config)
-        })
-        .then((response) =>{
-            const productData = response.data
-            const newProductMap = {...productsMap}
-            for (let i in productData) {
-                const product = productData[i];
-                newProductMap[product._id] = product;
-            }
-            setProductsMap(newProductMap)
-            setProducts(productData)
-        })
-        .catch((err)=>{console.log(err)})
-    },[productsMap])
-
-    useEffect(() => {
-
-        axios.post('http://localhost:3000/login',adminConfig)
-        .then((tokenData)=>{
-        return {
-            headers: {'Authorization': tokenData.data.token},
-        }
-        })
-        .then((config)=>{
-        return axios.get('http://localhost:3000/product/images',config)
-        })
-        .then((response) =>{
-            const productImagesObject = response.data;
-            const newProductImages = {...productImages}
-            for (let i in productImagesObject) {
-                const productImage = productImagesObject[i];
-                newProductImages[productImage._id] = productImage.name +"."+ productImage.imageType;
-            }
-            setProductImages(newProductImages)
-        })
-        .catch((err)=>{console.log(err)})
-    },[productImages])
 
     const addToCart=(e,productId)=>{
         const priceSplit = productsMap[productId].price.split(".")
@@ -71,8 +20,8 @@ function Products({shoppingCart, saveCart}) {
                 "currency": "usd",
                 "unit_amount": cents,
                 "product_data": {
-                    "name": productsMap[productId].name+"-"+productsMap[productId]._id,
-                    "description": productSizes[productId]+"-"+productsMap[productId].description.substring(0,80) + "...",
+                    "name": productsMap[productId].name+"---"+productsMap[productId]._id,
+                    "description": productSizes[productId]+"---"+productsMap[productId].description.substring(0,80) + "...",
                     "tax_code":"txcd_99999999"
                 }
             }
