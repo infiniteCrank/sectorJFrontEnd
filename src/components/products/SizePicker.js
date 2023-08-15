@@ -29,8 +29,6 @@ function SizePicker({
                 updateSizes.push(size)
             }
         }
-        console.log("updated sizes for "+productId+":")
-        console.log(updateSizes)
         setAvailableSizes(updateSizes)
     },[quantityMap,sizes,productId])
 

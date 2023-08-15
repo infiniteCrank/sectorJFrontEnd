@@ -9,6 +9,15 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
     let [productSizes, setProductSizes] = useState({})
 
     const addToCart=(e,productId)=>{
+        const productQuantities = {...quantityMap}
+        const productSizeChosen = productSizes[productId]
+        const productQty = productQuantities[productId][productSizeChosen]
+        console.log("before:")
+        console.log(productQty)
+        productQuantities[productId][productSizeChosen] = productQty-1
+        console.log("after:")
+        console.log(productQuantities[productId][productSizeChosen])
+
         const priceSplit = productsMap[productId].price.split(".")
         const dollars = parseInt(priceSplit[0].replace("$",""));
         let cents = parseInt(priceSplit[1]);
@@ -23,7 +32,7 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
                     "name": productsMap[productId].name+"---"+
                             productsMap[productId]._id+"---"+
                             productsMap[productId].image+".jpeg",
-                    "description": productSizes[productId]+"---"+productsMap[productId].description.substring(0,80) + "...",
+                    "description": productSizeChosen+"---"+productsMap[productId].description.substring(0,80) + "...",
                     "tax_code":"txcd_99999999"
                 }
             }
