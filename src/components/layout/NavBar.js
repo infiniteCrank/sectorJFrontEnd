@@ -59,7 +59,8 @@ function NavBar({shoppingCart, saveCart}) {
       const product = cartObject.price_data
       cartArray.push(product)
       const productCents = parseInt(product.unit_amount)
-      cartSubTotal +=productCents;
+      const itemQty = cartObject.quantity
+      cartSubTotal +=(productCents *itemQty);
     }
     const dollarAndCents = cartSubTotal/100
     let cartTax = dollarAndCents *0.085
@@ -70,7 +71,6 @@ function NavBar({shoppingCart, saveCart}) {
     setCartTotal(cartGrandTotal)
     setCartTax(cartTax)
     setCartShipping(cartShipping)
-    
   }
 
   const getProductImageName =(productTitle)=>{
