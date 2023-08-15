@@ -20,7 +20,9 @@ function Products({shoppingCart, saveCart, productImages, productsMap, products}
                 "currency": "usd",
                 "unit_amount": cents,
                 "product_data": {
-                    "name": productsMap[productId].name+"---"+productsMap[productId]._id,
+                    "name": productsMap[productId].name+"---"+
+                            productsMap[productId]._id+"---"+
+                            productImages[productsMap[productId].image],
                     "description": productSizes[productId]+"---"+productsMap[productId].description.substring(0,80) + "...",
                     "tax_code":"txcd_99999999"
                 }
