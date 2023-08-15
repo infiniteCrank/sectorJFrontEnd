@@ -9,6 +9,8 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
     let [productSizes, setProductSizes] = useState({})
 
     const addToCart=(e,productId)=>{
+
+        //update quantity
         const productQuantities = {...quantityMap}
         const productSizeChosen = productSizes[productId]
         const productQty = productQuantities[productId][productSizeChosen]
@@ -18,25 +20,35 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
         console.log("after:")
         console.log(productQuantities[productId][productSizeChosen])
 
+        //change dollars back to cents for stripe
         const priceSplit = productsMap[productId].price.split(".")
         const dollars = parseInt(priceSplit[0].replace("$",""));
         let cents = parseInt(priceSplit[1]);
         cents += dollars*100
+
         const newCart = {...shoppingCart}
-        newCart[productId]= {
-            "quantity": 1,
-            "price_data": {
-                "currency": "usd",
-                "unit_amount": cents,
-                "product_data": {
-                    "name": productsMap[productId].name+"---"+
-                            productsMap[productId]._id+"---"+
-                            productsMap[productId].image+".jpeg",
-                    "description": productSizeChosen+"---"+productsMap[productId].description.substring(0,80) + "...",
-                    "tax_code":"txcd_99999999"
+        //TODO: check for duplicate ids and update qty on cart remove
+        if(!(productId in newCart)){
+            // this is a new item
+            newCart[productId]= {
+                "quantity": 1,
+                "price_data": {
+                    "currency": "usd",
+                    "unit_amount": cents,
+                    "product_data": {
+                        "name": productsMap[productId].name+"---"+
+                                productsMap[productId]._id+"---"+
+                                productsMap[productId].image+".jpeg",
+                        "description": productSizeChosen+"---"+productsMap[productId].description.substring(0,80) + "...",
+                        "tax_code":"txcd_99999999"
+                    }
                 }
             }
+        }else{
+            // add to qty in cart 
+            console.log("add to qty")
         }
+        
         saveCart(newCart)
     }
 
