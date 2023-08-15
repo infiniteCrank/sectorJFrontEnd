@@ -18,7 +18,6 @@ function App() {
   let [productsMap, setProductsMap] = useState({})
 
   useEffect(() => {
-    console.log("i am getting called")
     axios.post('http://localhost:3000/login',adminConfig)
     .then((tokenData)=>{
     return {
