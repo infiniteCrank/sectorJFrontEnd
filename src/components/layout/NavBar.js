@@ -170,7 +170,7 @@ function NavBar({shoppingCart, saveCart}) {
                   <span className="badge bg-dark">Size: {getProductSize(product.product_data.description)}</span>
                 </div>
 
-                <div class="btn-group-vertical">
+                <div className="btn-group-vertical">
                   <h4>
                     <span className="badge bg-secondary">
                       ${(parseInt(product.unit_amount)*parseInt(product.quantity))/100}
