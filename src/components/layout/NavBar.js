@@ -43,7 +43,7 @@ function NavBar({shoppingCart, saveCart}) {
     let count = 0
     for(let key in cart){
       if(key){
-        count++
+        count = count + cart[key].quantity
       }
     }
     return count
@@ -167,7 +167,7 @@ function NavBar({shoppingCart, saveCart}) {
                 <div className="ms-2 me-auto">
                   <div className="fw-bold">{getProductTitle(product.product_data.name)}</div>
                   {getProductDescription(product.product_data.description)}
-                  <span className="badge bg-dark">Size: {getProductSize(product.product_data.description)}</span>
+                  <span className="badge bg-dark">Sizes: {getProductSize(product.product_data.description)}</span>
                 </div>
 
                 <div className="btn-group-vertical">
