@@ -18,6 +18,7 @@ function App() {
   let [productsMap, setProductsMap] = useState({})
 
   useEffect(() => {
+    console.log("i am getting called")
     axios.post('http://localhost:3000/login',adminConfig)
     .then((tokenData)=>{
     return {
@@ -29,7 +30,7 @@ function App() {
     })
     .then((response) =>{
         const productData = response.data
-        const newProductMap = {...productsMap}
+        const newProductMap = {}
         for (let i in productData) {
             const product = productData[i];
             newProductMap[product._id] = product;
@@ -38,7 +39,7 @@ function App() {
         setProducts(productData)
     })
     .catch((err)=>{console.log(err)})
-  },[productsMap])
+  },[])
 
   return (
     <div className="App">
