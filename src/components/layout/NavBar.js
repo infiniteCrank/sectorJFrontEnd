@@ -108,7 +108,7 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity}) {
   }
 
   return (
-<div>
+<div className="sticky-top">
     <nav className="navbar sticky-top navbar-expand-lg navbar-light bg-light">
     <div className="container-fluid">
       <Link className="navbar-brand" to="/">
