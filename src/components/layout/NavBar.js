@@ -57,6 +57,7 @@ function NavBar({shoppingCart, saveCart}) {
       ItemCount++
       const cartObject = cart[productId]
       const product = cartObject.price_data
+      product["quantity"] = cartObject.quantity;
       cartArray.push(product)
       const productCents = parseInt(product.unit_amount)
       const itemQty = cartObject.quantity
@@ -168,7 +169,7 @@ function NavBar({shoppingCart, saveCart}) {
                   {getProductDescription(product.product_data.description)}
                   <span className="badge bg-dark">Size: {getProductSize(product.product_data.description)}</span>
                 </div>
-                <h4><span className="badge bg-secondary">${parseInt(product.unit_amount)/100}</span></h4>
+                <h4><span className="badge bg-secondary">${(parseInt(product.unit_amount)*parseInt(product.quantity))/100}</span></h4>
                 <button 
                 onClick={(e)=>{removeItem(getProductId(product.product_data.name))}}
                 type="button" 
