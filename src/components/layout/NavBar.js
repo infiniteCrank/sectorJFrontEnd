@@ -90,6 +90,12 @@ function NavBar({shoppingCart, saveCart}) {
     return productDesc.split("---")[0].toUpperCase()
   }
 
+  const removeItem = (itemId)=>{
+    const newCart = {...shoppingCart}
+    delete newCart[itemId]
+    saveCart(newCart)
+  }
+
   return (
 <div>
     <nav className="navbar sticky-top navbar-expand-lg navbar-light bg-light">
@@ -161,6 +167,13 @@ function NavBar({shoppingCart, saveCart}) {
                   <span className="badge bg-dark">Size: {getProductSize(product.product_data.description)}</span>
                 </div>
                 <h4><span className="badge bg-secondary">${parseInt(product.unit_amount)/100}</span></h4>
+                <button 
+                onClick={(e)=>{removeItem(getProductId(product.product_data.name))}}
+                type="button" 
+                className="btn btn-outline-secondary btn-sm"
+                >
+                  Remove
+                </button>
               </li>
               ))}
               
