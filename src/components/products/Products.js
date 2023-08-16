@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import { useState } from 'react';
 import Image from '../Image/Image';
 import SizePicker from './SizePicker';
@@ -88,7 +87,11 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
                         <li className="list-group-item">Price: {product.price}</li>
                     </ul>
                     <div className='container-fluid'>
-                        <Link className="btn btn-outline-dark" to={`product/${product._id}`}>View</Link>
+                        <button 
+                            className="btn btn-outline-dark"
+                        >
+                            View
+                        </button>
                         <button 
                             type="button" 
                             onClick={(e)=>{addToCart(e,product._id)}} 
