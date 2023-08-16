@@ -7,6 +7,7 @@ import { useState,useEffect } from 'react';
 import axios from 'axios';
 import adminConfig from "./components/config/admin.json";
 import Success from './components/status/Success';
+import CancelOrder from './components/status/Cancel';
 
 function App() {
   let [shoppingCart, setShoppingCart] = useState({})
@@ -58,6 +59,9 @@ function App() {
         saveQuantity={saveQuantity}
       />
     <Switch>
+          <Route path="/cancel" render={(props) => 
+          <CancelOrder/>} />
+
           <Route path="/success" render={(props) => 
           <Success/>} />
 
