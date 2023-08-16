@@ -41,6 +41,7 @@ function App() {
             const product = productData[i];
             newProductMap[product._id] = product;
             newQuantityMap[product._id] = product.quantity;
+            //newQuantityMap[product._id] = product.quantity;
         }
         setQuantityMap(newQuantityMap)
         setProductsMap(newProductMap)

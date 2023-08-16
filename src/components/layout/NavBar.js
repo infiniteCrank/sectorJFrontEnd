@@ -7,7 +7,7 @@ import Image from '../Image/Image';
 import {loadStripe} from '@stripe/stripe-js';
 import stripeKeys from "../config/stripeKey.json"
 
-function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity}) {
+function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
   let [productTypes, setProductTypes] = useState(null)
   let [itemProductCount, setItemProductCount] = useState(0)
   let [productCartArray, setProductCartArray] = useState([])
@@ -15,11 +15,40 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity}) {
   let [cartTax, setCartTax] = useState([])
   let [cartShipping, setCartShipping] = useState([])
 
+
   useEffect(() => {
     const productCount = countItems(shoppingCart)
+    const buildCartArray = (cart)=>{
+      let cartSubTotal = 0
+      let ItemCount = 0
+      const cartArray =[]
+      let shippingIsOn = true
+      for(let productId in cart){
+        ItemCount++
+        const cartObject = cart[productId]
+        const product = cartObject.price_data
+        product["quantity"] = cartObject.quantity;
+        cartArray.push(product)
+        const productCents = parseInt(product.unit_amount)
+        const itemQty = cartObject.quantity
+        cartSubTotal +=(productCents *itemQty);
+        if(productsMap[productId].wizdudsId === "in-person-no-ship"){
+          shippingIsOn = false
+        }
+      }
+      const dollarAndCents = cartSubTotal/100
+      let cartTax = dollarAndCents *0.085
+      cartTax = (Math.round(cartTax*Math.pow(10,2))/Math.pow(10,2)).toFixed(2)
+      const cartShipping = ((ItemCount>0)&&shippingIsOn)?11:0;
+      const cartGrandTotal = parseFloat(dollarAndCents+cartShipping) + parseFloat(cartTax)
+      setProductCartArray(cartArray)
+      setCartTotal(cartGrandTotal)
+      setCartTax(cartTax)
+      setCartShipping(cartShipping)
+    }
     setItemProductCount(productCount)
     buildCartArray(shoppingCart)
-  },[shoppingCart])
+  },[shoppingCart,productsMap])
 
   useEffect(() => {
     axios.post('http://localhost:3000/login',adminConfig)
@@ -49,31 +78,6 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity}) {
       }
     }
     return count
-  }
-
-  const buildCartArray = (cart)=>{
-    let cartSubTotal = 0
-    let ItemCount = 0
-    const cartArray =[]
-    for(let productId in cart){
-      ItemCount++
-      const cartObject = cart[productId]
-      const product = cartObject.price_data
-      product["quantity"] = cartObject.quantity;
-      cartArray.push(product)
-      const productCents = parseInt(product.unit_amount)
-      const itemQty = cartObject.quantity
-      cartSubTotal +=(productCents *itemQty);
-    }
-    const dollarAndCents = cartSubTotal/100
-    let cartTax = dollarAndCents *0.085
-    cartTax = (Math.round(cartTax*Math.pow(10,2))/Math.pow(10,2)).toFixed(2)
-    const cartShipping = (ItemCount>0)?11:0;
-    const cartGrandTotal = parseFloat(dollarAndCents+cartShipping) + parseFloat(cartTax)
-    setProductCartArray(cartArray)
-    setCartTotal(cartGrandTotal)
-    setCartTax(cartTax)
-    setCartShipping(cartShipping)
   }
 
   const getProductImageName =(productTitle)=>{
