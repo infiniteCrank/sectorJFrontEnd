@@ -1,11 +1,13 @@
 import React from 'react';
-import {Route} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import './App.css';
 import NavBar from './components/layout/NavBar';
 import Products from './components/products/Products';
 import { useState,useEffect } from 'react';
 import axios from 'axios';
 import adminConfig from "./components/config/admin.json";
+import Success from './components/status/Success';
+import CancelOrder from './components/status/Cancel';
 
 function App() {
   let [shoppingCart, setShoppingCart] = useState({})
@@ -56,16 +58,26 @@ function App() {
         quantityMap={quantityMap}
         saveQuantity={saveQuantity}
       />
-      <Route path="/" render={(props) => 
-      <Products 
-          quantityMap={quantityMap}
-          saveQuantity={saveQuantity}
-          shoppingCart={shoppingCart} 
-          products={products}
-          productsMap={productsMap}
-          saveCart={saveCart} 
-          {...props} 
-      />} />
+    <Switch>
+          <Route path="/cancel" render={(props) => 
+          <CancelOrder/>} />
+
+          <Route path="/success" render={(props) => 
+          <Success/>} />
+
+          <Route path="/" render={(props) => 
+          <Products 
+              quantityMap={quantityMap}
+              saveQuantity={saveQuantity}
+              shoppingCart={shoppingCart} 
+              products={products}
+              productsMap={productsMap}
+              saveCart={saveCart} 
+              {...props} 
+          />} />
+    </Switch>
+      
+
     </div>
   );
 }
