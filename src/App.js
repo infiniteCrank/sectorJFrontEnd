@@ -39,9 +39,13 @@ function App() {
         const newQuantityMap = {}
         for (let i in productData) {
             const product = productData[i];
-            newProductMap[product._id] = product;
-            newQuantityMap[product._id] = product.quantity;
-            //newQuantityMap[product._id] = product.quantity;
+            
+            if(product.enabled){
+              newProductMap[product._id] = product;
+              newQuantityMap[product._id] = product.quantity;
+            }else{
+              delete productData[i]
+            }
         }
         setQuantityMap(newQuantityMap)
         setProductsMap(newProductMap)
