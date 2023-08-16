@@ -115,10 +115,38 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity}) {
       delete shoppingCart[ProductId].price_data.quantity
       lineItems.push(shoppingCart[ProductId])
     }
+    // add tax
+    const taxCents = cartTax *100
+    lineItems.push({
+      "quantity": 1,
+      "price_data": {
+          "currency": "usd",
+          "unit_amount": taxCents,
+          "product_data": {
+              "name": "sales tax",
+              "description": "Virginia sales tax",
+          }
+      }
+    })
+    // add shipping 
+    const shippingCents = cartShipping *100
+    lineItems.push({
+      "quantity": 1,
+      "price_data": {
+          "currency": "usd",
+          "unit_amount": shippingCents,
+          "product_data": {
+              "name": "shipping",
+              "description": "USPS - flat rate shipping",
+          }
+      }
+    })
+
     const requestBody = {
       lineItems:lineItems
     }
     console.log(requestBody)
+
     const stripeKeyToUse = (stripeKeys.env ==="dev")?stripeKeys.test:stripeKeys.prod
     loadStripe(stripeKeyToUse)
     .then((stripe)=>{
@@ -129,7 +157,6 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity}) {
       })
       .catch((err)=>{console.log(err)})
     })
-
 
   }
 
