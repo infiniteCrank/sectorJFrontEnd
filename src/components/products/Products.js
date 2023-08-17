@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import { useState } from 'react';
 import Image from '../Image/Image';
 import SizePicker from './SizePicker';
@@ -7,6 +6,7 @@ import SizePicker from './SizePicker';
 function Products({shoppingCart, saveCart, productsMap, products, quantityMap, saveQuantity}) {
     
     let [productSizes, setProductSizes] = useState({})
+    let [selectedProduct, setSelectedProduct] = useState("")
 
     const addToCart=(e,productId)=>{
 
@@ -59,7 +59,40 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
         return someLeft
     }
 
+    const BuildViewModal = ()=>{
+
+        if(selectedProduct){
+            const selectedProductObject = productsMap[selectedProduct];
+            console.log(selectedProductObject)
+            return (
+                <div>
+                    <SizePicker 
+                        quantityMap={quantityMap}
+                        sizes={selectedProductObject.size.split(",")}
+                        productId={selectedProductObject._id}
+                        productSizeState={productSizes}
+                        setProductSizeState={setProductSizes}
+                    />
+                    <button 
+                        type="button" 
+                        class="btn btn-danger btn-lg"
+                        onClick={(e)=>{addToCart(e,selectedProductObject._id)}} 
+                    >
+                        Add To Cart
+                    </button>
+                    <Image 
+                        fileName={(selectedProductObject.image + ".jpeg")||"no-image.jpeg"} 
+                        alt={productsMap[selectedProduct].name} 
+                        className="card-img-top"
+                    /> 
+                </div>
+            )
+        }
+        return (<></>)
+    }
+
     return (
+    <>
     <div className="container">
         <div className="row">
         {
@@ -88,7 +121,16 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
                         <li className="list-group-item">Price: {product.price}</li>
                     </ul>
                     <div className='container-fluid'>
-                        <Link className="btn btn-outline-dark" to={`product/${product._id}`}>View</Link>
+                        <button 
+                            className="btn btn-outline-dark"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#viewProductModal"
+                            onClick={(e)=>{
+                                setSelectedProduct(product._id)
+                            }}
+                        >
+                            View
+                        </button>
                         <button 
                             type="button" 
                             onClick={(e)=>{addToCart(e,product._id)}} 
@@ -104,6 +146,26 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
         }
         </div>
     </div>
+
+    <div className="modal fade" id="viewProductModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog">
+            <div className="modal-content">
+                <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
+                    {selectedProduct && productsMap[selectedProduct].name}
+                </h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div className="modal-body">
+                    <BuildViewModal/>
+                </div>
+                <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </>
     );
 }
 

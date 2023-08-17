@@ -2,40 +2,69 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import adminConfig from "../config/admin.json";
+//import adminConfig from "../config/admin.json";
 import Image from '../Image/Image';
 import {loadStripe} from '@stripe/stripe-js';
 import stripeKeys from "../config/stripeKey.json"
 
-function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity}) {
-  let [productTypes, setProductTypes] = useState(null)
+function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
+  //let [productTypes, setProductTypes] = useState(null)
   let [itemProductCount, setItemProductCount] = useState(0)
   let [productCartArray, setProductCartArray] = useState([])
   let [cartTotal, setCartTotal] = useState([])
   let [cartTax, setCartTax] = useState([])
   let [cartShipping, setCartShipping] = useState([])
 
-  useEffect(() => {
-    const productCount = countItems(shoppingCart)
-    setItemProductCount(productCount)
-    buildCartArray(shoppingCart)
-  },[shoppingCart])
 
   useEffect(() => {
-    axios.post('http://localhost:3000/login',adminConfig)
-    .then((tokenData)=>{
-      return {
-        headers: {'Authorization': tokenData.data.token},
+    const productCount = countItems(shoppingCart)
+    const buildCartArray = (cart)=>{
+      let cartSubTotal = 0
+      let ItemCount = 0
+      const cartArray =[]
+      let shippingIsOn = true
+      for(let productId in cart){
+        ItemCount++
+        const cartObject = cart[productId]
+        const product = cartObject.price_data
+        product["quantity"] = cartObject.quantity;
+        cartArray.push(product)
+        const productCents = parseInt(product.unit_amount)
+        const itemQty = cartObject.quantity
+        cartSubTotal +=(productCents *itemQty);
+        if(productsMap[productId].wizdudsId === "in-person-no-ship"){
+          shippingIsOn = false
+        }
       }
-    })
-    .then((config)=>{
-      return axios.get('http://localhost:3000/product/types',config)
-    })
-    .then((response) =>{
-      setProductTypes(response.data)
-    })
-    .catch((err)=>{console.log(err)})
-  },[])
+      const dollarAndCents = cartSubTotal/100
+      let cartTax = dollarAndCents *0.085
+      cartTax = (Math.round(cartTax*Math.pow(10,2))/Math.pow(10,2)).toFixed(2)
+      const cartShipping = ((ItemCount>0)&&shippingIsOn)?11:0;
+      const cartGrandTotal = parseFloat(dollarAndCents+cartShipping) + parseFloat(cartTax)
+      setProductCartArray(cartArray)
+      setCartTotal(cartGrandTotal)
+      setCartTax(cartTax)
+      setCartShipping(cartShipping)
+    }
+    setItemProductCount(productCount)
+    buildCartArray(shoppingCart)
+  },[shoppingCart,productsMap])
+
+  // useEffect(() => {
+  //   axios.post('http://localhost:3000/login',adminConfig)
+  //   .then((tokenData)=>{
+  //     return {
+  //       headers: {'Authorization': tokenData.data.token},
+  //     }
+  //   })
+  //   .then((config)=>{
+  //     return axios.get('http://localhost:3000/product/types',config)
+  //   })
+  //   .then((response) =>{
+  //     setProductTypes(response.data)
+  //   })
+  //   .catch((err)=>{console.log(err)})
+  // },[])
 
   const handleViewCart = (e)=>{
     //console.log(shoppingCart)
@@ -49,31 +78,6 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity}) {
       }
     }
     return count
-  }
-
-  const buildCartArray = (cart)=>{
-    let cartSubTotal = 0
-    let ItemCount = 0
-    const cartArray =[]
-    for(let productId in cart){
-      ItemCount++
-      const cartObject = cart[productId]
-      const product = cartObject.price_data
-      product["quantity"] = cartObject.quantity;
-      cartArray.push(product)
-      const productCents = parseInt(product.unit_amount)
-      const itemQty = cartObject.quantity
-      cartSubTotal +=(productCents *itemQty);
-    }
-    const dollarAndCents = cartSubTotal/100
-    let cartTax = dollarAndCents *0.085
-    cartTax = (Math.round(cartTax*Math.pow(10,2))/Math.pow(10,2)).toFixed(2)
-    const cartShipping = (ItemCount>0)?11:0;
-    const cartGrandTotal = parseFloat(dollarAndCents+cartShipping) + parseFloat(cartTax)
-    setProductCartArray(cartArray)
-    setCartTotal(cartGrandTotal)
-    setCartTax(cartTax)
-    setCartShipping(cartShipping)
   }
 
   const getProductImageName =(productTitle)=>{
@@ -176,7 +180,7 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity}) {
           <li className="nav-item">
           <Link className="nav-link active" to="/">Home</Link>
           </li>
-          <li className="nav-item dropdown">
+          {/* <li className="nav-item dropdown">
             <button className="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
               Products
             </button>
@@ -185,6 +189,12 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity}) {
                   return <li key={productType.name} >{productType.name}</li>
               })}
             </ul>
+          </li> */}
+          <li className="nav-item">
+            <Link className="nav-link active" to="/contact">Contact Us</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link active" to="/policies">Privacy and Policies</Link>
           </li>
         </ul>
         {/* <form className="d-flex">
@@ -204,89 +214,89 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity}) {
     </div>
     </nav>
 </div>
- <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
- <div className="modal-dialog modal-dialog-scrollable">
-   <div className="modal-content">
-     <div className="modal-header">
-       <h5 className="modal-title" id="exampleModalLabel">Shopping Cart</h5>
-       <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-     </div>
-     <div className="modal-body">
-     <ul className="list-group">
+  <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div className="modal-dialog modal-dialog-scrollable">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h5 className="modal-title" id="exampleModalLabel">Shopping Cart</h5>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div className="modal-body">
+      <ul className="list-group">
 
-       {productCartArray && productCartArray.map(product => (
-         <li 
-           key={getProductId(product.product_data.name)} 
-           className="list-group-item d-flex justify-content-between align-items-start"
-         >
-         <Image 
-           fileName={(getProductImageName(product.product_data.name))||"no-image.jpeg"} 
-           alt={product.product_data.name} 
-           className="img-thumbnail rounded float-start"
-           thumbnail={true}
-           />
-         <div className="ms-2 me-auto">
-           <div className="fw-bold">{getProductTitle(product.product_data.name)}</div>
-           {getProductDescription(product.product_data.description)}
-           <span className="badge bg-dark">Sizes: {getProductSize(product.product_data.description)}</span>
-         </div>
+        {productCartArray && productCartArray.map(product => (
+          <li 
+            key={getProductId(product.product_data.name)} 
+            className="list-group-item d-flex justify-content-between align-items-start"
+          >
+          <Image 
+            fileName={(getProductImageName(product.product_data.name))||"no-image.jpeg"} 
+            alt={product.product_data.name} 
+            className="img-thumbnail rounded float-start"
+            thumbnail={true}
+            />
+          <div className="ms-2 me-auto">
+            <div className="fw-bold">{getProductTitle(product.product_data.name)}</div>
+            {getProductDescription(product.product_data.description)}
+            <span className="badge bg-dark">Sizes: {getProductSize(product.product_data.description)}</span>
+          </div>
 
-         <div className="btn-group-vertical">
-           <h4>
-             <span className="badge bg-secondary">
-               ${(parseInt(product.unit_amount)*parseInt(product.quantity))/100}
-             </span>
-           </h4>
-           
-           <span className="badge bg-dark">Qty: {product.quantity}</span>
-           
-           <button 
-           onClick={(e)=>{removeItem(getProductId(product.product_data.name))}}
-           type="button" 
-           className="btn btn-outline-secondary btn-sm mt-2"
-           >
-             Remove
-           </button>
-         </div>
+          <div className="btn-group-vertical">
+            <h4>
+              <span className="badge bg-secondary">
+                ${(parseInt(product.unit_amount)*parseInt(product.quantity))/100}
+              </span>
+            </h4>
+            
+            <span className="badge bg-dark">Qty: {product.quantity}</span>
+            
+            <button 
+            onClick={(e)=>{removeItem(getProductId(product.product_data.name))}}
+            type="button" 
+            className="btn btn-outline-secondary btn-sm mt-2"
+            >
+              Remove
+            </button>
+          </div>
 
-       </li>
-       ))}
-       
-     </ul>
-     <ul className="list-group list-group-flush">
-         <li className="list-group-item d-flex justify-content-between align-items-start">
-           <div className="ms-2 me-auto">
-             <div className="fw-bold">Tax:</div>
-             We charge Virginia state sales tax.
-           </div>
-           <h4><span className="badge bg-secondary">${cartTax}</span></h4>
-         </li>
-         <li className="list-group-item d-flex justify-content-between align-items-start">
-           <div className="ms-2 me-auto">
-               <div className="fw-bold">Shipping:</div>
-               We ship with USPS flat rate shipping in USA and Canada only.
-           </div>
-           <h4><span className="badge bg-secondary">${cartShipping}</span></h4>
-         </li>
-         <li className="list-group-item d-flex justify-content-between align-items-start">
-           <div className="fw-bold">Total:</div>
-           <h4><span className="badge bg-secondary">${cartTotal}</span></h4>
-         </li>
-     </ul>
-     </div>
-     <div className="modal-footer">
-       <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close</button>
-       <button 
-       onClick={(e)=>{CheckOutAction()}}
-       disabled={(itemProductCount===0)?true:false}
-       type="button" 
-       className="btn btn-danger"
-       >
-         Checkout Total: ${cartTotal}
-       </button>
-     </div>
-   </div>
- </div>
+        </li>
+        ))}
+        
+      </ul>
+      <ul className="list-group list-group-flush">
+          <li className="list-group-item d-flex justify-content-between align-items-start">
+            <div className="ms-2 me-auto">
+              <div className="fw-bold">Tax:</div>
+              We charge Virginia state sales tax.
+            </div>
+            <h4><span className="badge bg-secondary">${cartTax}</span></h4>
+          </li>
+          <li className="list-group-item d-flex justify-content-between align-items-start">
+            <div className="ms-2 me-auto">
+                <div className="fw-bold">Shipping:</div>
+                We ship with USPS flat rate shipping in USA and Canada only.
+            </div>
+            <h4><span className="badge bg-secondary">${cartShipping}</span></h4>
+          </li>
+          <li className="list-group-item d-flex justify-content-between align-items-start">
+            <div className="fw-bold">Total:</div>
+            <h4><span className="badge bg-secondary">${cartTotal}</span></h4>
+          </li>
+      </ul>
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close</button>
+        <button 
+        onClick={(e)=>{CheckOutAction()}}
+        disabled={(itemProductCount===0)?true:false}
+        type="button" 
+        className="btn btn-danger"
+        >
+          Checkout Total: ${cartTotal}
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 </>
   );
