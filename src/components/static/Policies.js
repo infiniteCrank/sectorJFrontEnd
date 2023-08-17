@@ -6,8 +6,7 @@ function Policies() {
                 <li className="list-group-item">
                     <h3>Returns:</h3>
                     <p>Generally there are no returns or refunds for purchased merchandise. 
-                    However, if you have any trouble with our merchandise please send an email to
-                    <a href="mailto:clockworksyler@gmail.com">clockworksyler@gmail.com</a></p>
+                    However, if you have any trouble with our merchandise please send an email to <a href="mailto:clockworksyler@gmail.com">clockworksyler@gmail.com</a></p>
                 </li>
                 <li className="list-group-item">
                     <h3>Shipping:</h3>
@@ -34,8 +33,8 @@ function Policies() {
                 </li>
                 <li className="list-group-item">
                     <h3>Merchandise:</h3>
-                    <p>Wizduds gathers merchandise such as clothing and accessories f
-                        rom whole sale dealers, bulk sales, and people like you. We hand pick these items based off 
+                    <p>Wizduds gathers merchandise such as clothing and accessories 
+                        from whole sale dealers, bulk sales, and people like you. We hand pick these items based off 
                         ascetics, and price among other things.</p>
                     <p>Item condition will be listed in the item description</p>
                     <p>Wizduds branded products will always be new. Wizduds brand products 
