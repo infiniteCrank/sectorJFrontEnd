@@ -2,13 +2,13 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import adminConfig from "../config/admin.json";
+//import adminConfig from "../config/admin.json";
 import Image from '../Image/Image';
 import {loadStripe} from '@stripe/stripe-js';
 import stripeKeys from "../config/stripeKey.json"
 
 function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
-  let [productTypes, setProductTypes] = useState(null)
+  //let [productTypes, setProductTypes] = useState(null)
   let [itemProductCount, setItemProductCount] = useState(0)
   let [productCartArray, setProductCartArray] = useState([])
   let [cartTotal, setCartTotal] = useState([])
@@ -50,21 +50,21 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
     buildCartArray(shoppingCart)
   },[shoppingCart,productsMap])
 
-  useEffect(() => {
-    axios.post('http://localhost:3000/login',adminConfig)
-    .then((tokenData)=>{
-      return {
-        headers: {'Authorization': tokenData.data.token},
-      }
-    })
-    .then((config)=>{
-      return axios.get('http://localhost:3000/product/types',config)
-    })
-    .then((response) =>{
-      setProductTypes(response.data)
-    })
-    .catch((err)=>{console.log(err)})
-  },[])
+  // useEffect(() => {
+  //   axios.post('http://localhost:3000/login',adminConfig)
+  //   .then((tokenData)=>{
+  //     return {
+  //       headers: {'Authorization': tokenData.data.token},
+  //     }
+  //   })
+  //   .then((config)=>{
+  //     return axios.get('http://localhost:3000/product/types',config)
+  //   })
+  //   .then((response) =>{
+  //     setProductTypes(response.data)
+  //   })
+  //   .catch((err)=>{console.log(err)})
+  // },[])
 
   const handleViewCart = (e)=>{
     //console.log(shoppingCart)
@@ -180,7 +180,7 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
           <li className="nav-item">
           <Link className="nav-link active" to="/">Home</Link>
           </li>
-          <li className="nav-item dropdown">
+          {/* <li className="nav-item dropdown">
             <button className="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
               Products
             </button>
@@ -189,7 +189,7 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
                   return <li key={productType.name} >{productType.name}</li>
               })}
             </ul>
-          </li>
+          </li> */}
           <li className="nav-item">
             <Link className="nav-link active" to="/contact">Contact Us</Link>
           </li>
