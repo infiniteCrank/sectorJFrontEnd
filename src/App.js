@@ -8,6 +8,8 @@ import axios from 'axios';
 import adminConfig from "./components/config/admin.json";
 import Success from './components/status/Success';
 import CancelOrder from './components/status/Cancel';
+import ContactUs from './components/static/ContactUs';
+import Policies from './components/static/Policies';
 
 function App() {
   let [shoppingCart, setShoppingCart] = useState({})
@@ -69,6 +71,12 @@ function App() {
 
           <Route path="/success" render={(props) => 
           <Success/>} />
+
+          <Route path="/contact" render={(props) => 
+          <ContactUs/>} />
+
+          <Route path="/policies" render={(props) => 
+          <Policies/>} />
 
           <Route path="/" render={(props) => 
           <Products 

@@ -190,6 +190,12 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
               })}
             </ul>
           </li>
+          <li className="nav-item">
+            <Link className="nav-link active" to="/contact">Contact Us</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link active" to="/policies">Privacy and Policies</Link>
+          </li>
         </ul>
         {/* <form className="d-flex">
           <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
@@ -208,89 +214,89 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
     </div>
     </nav>
 </div>
- <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
- <div className="modal-dialog modal-dialog-scrollable">
-   <div className="modal-content">
-     <div className="modal-header">
-       <h5 className="modal-title" id="exampleModalLabel">Shopping Cart</h5>
-       <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-     </div>
-     <div className="modal-body">
-     <ul className="list-group">
+  <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div className="modal-dialog modal-dialog-scrollable">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h5 className="modal-title" id="exampleModalLabel">Shopping Cart</h5>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div className="modal-body">
+      <ul className="list-group">
 
-       {productCartArray && productCartArray.map(product => (
-         <li 
-           key={getProductId(product.product_data.name)} 
-           className="list-group-item d-flex justify-content-between align-items-start"
-         >
-         <Image 
-           fileName={(getProductImageName(product.product_data.name))||"no-image.jpeg"} 
-           alt={product.product_data.name} 
-           className="img-thumbnail rounded float-start"
-           thumbnail={true}
-           />
-         <div className="ms-2 me-auto">
-           <div className="fw-bold">{getProductTitle(product.product_data.name)}</div>
-           {getProductDescription(product.product_data.description)}
-           <span className="badge bg-dark">Sizes: {getProductSize(product.product_data.description)}</span>
-         </div>
+        {productCartArray && productCartArray.map(product => (
+          <li 
+            key={getProductId(product.product_data.name)} 
+            className="list-group-item d-flex justify-content-between align-items-start"
+          >
+          <Image 
+            fileName={(getProductImageName(product.product_data.name))||"no-image.jpeg"} 
+            alt={product.product_data.name} 
+            className="img-thumbnail rounded float-start"
+            thumbnail={true}
+            />
+          <div className="ms-2 me-auto">
+            <div className="fw-bold">{getProductTitle(product.product_data.name)}</div>
+            {getProductDescription(product.product_data.description)}
+            <span className="badge bg-dark">Sizes: {getProductSize(product.product_data.description)}</span>
+          </div>
 
-         <div className="btn-group-vertical">
-           <h4>
-             <span className="badge bg-secondary">
-               ${(parseInt(product.unit_amount)*parseInt(product.quantity))/100}
-             </span>
-           </h4>
-           
-           <span className="badge bg-dark">Qty: {product.quantity}</span>
-           
-           <button 
-           onClick={(e)=>{removeItem(getProductId(product.product_data.name))}}
-           type="button" 
-           className="btn btn-outline-secondary btn-sm mt-2"
-           >
-             Remove
-           </button>
-         </div>
+          <div className="btn-group-vertical">
+            <h4>
+              <span className="badge bg-secondary">
+                ${(parseInt(product.unit_amount)*parseInt(product.quantity))/100}
+              </span>
+            </h4>
+            
+            <span className="badge bg-dark">Qty: {product.quantity}</span>
+            
+            <button 
+            onClick={(e)=>{removeItem(getProductId(product.product_data.name))}}
+            type="button" 
+            className="btn btn-outline-secondary btn-sm mt-2"
+            >
+              Remove
+            </button>
+          </div>
 
-       </li>
-       ))}
-       
-     </ul>
-     <ul className="list-group list-group-flush">
-         <li className="list-group-item d-flex justify-content-between align-items-start">
-           <div className="ms-2 me-auto">
-             <div className="fw-bold">Tax:</div>
-             We charge Virginia state sales tax.
-           </div>
-           <h4><span className="badge bg-secondary">${cartTax}</span></h4>
-         </li>
-         <li className="list-group-item d-flex justify-content-between align-items-start">
-           <div className="ms-2 me-auto">
-               <div className="fw-bold">Shipping:</div>
-               We ship with USPS flat rate shipping in USA and Canada only.
-           </div>
-           <h4><span className="badge bg-secondary">${cartShipping}</span></h4>
-         </li>
-         <li className="list-group-item d-flex justify-content-between align-items-start">
-           <div className="fw-bold">Total:</div>
-           <h4><span className="badge bg-secondary">${cartTotal}</span></h4>
-         </li>
-     </ul>
-     </div>
-     <div className="modal-footer">
-       <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close</button>
-       <button 
-       onClick={(e)=>{CheckOutAction()}}
-       disabled={(itemProductCount===0)?true:false}
-       type="button" 
-       className="btn btn-danger"
-       >
-         Checkout Total: ${cartTotal}
-       </button>
-     </div>
-   </div>
- </div>
+        </li>
+        ))}
+        
+      </ul>
+      <ul className="list-group list-group-flush">
+          <li className="list-group-item d-flex justify-content-between align-items-start">
+            <div className="ms-2 me-auto">
+              <div className="fw-bold">Tax:</div>
+              We charge Virginia state sales tax.
+            </div>
+            <h4><span className="badge bg-secondary">${cartTax}</span></h4>
+          </li>
+          <li className="list-group-item d-flex justify-content-between align-items-start">
+            <div className="ms-2 me-auto">
+                <div className="fw-bold">Shipping:</div>
+                We ship with USPS flat rate shipping in USA and Canada only.
+            </div>
+            <h4><span className="badge bg-secondary">${cartShipping}</span></h4>
+          </li>
+          <li className="list-group-item d-flex justify-content-between align-items-start">
+            <div className="fw-bold">Total:</div>
+            <h4><span className="badge bg-secondary">${cartTotal}</span></h4>
+          </li>
+      </ul>
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Close</button>
+        <button 
+        onClick={(e)=>{CheckOutAction()}}
+        disabled={(itemProductCount===0)?true:false}
+        type="button" 
+        className="btn btn-danger"
+        >
+          Checkout Total: ${cartTotal}
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 </>
   );
