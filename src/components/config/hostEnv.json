@@ -1,0 +1,5 @@
+{
+    "env":"dev",
+    "devApiHost":"http://localhost:3000",
+    "prodApiHost":"https://www.wizduds.com"
+}

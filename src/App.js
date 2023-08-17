@@ -6,6 +6,7 @@ import Products from './components/products/Products';
 import { useState,useEffect } from 'react';
 import axios from 'axios';
 import adminConfig from "./components/config/admin.json";
+import hostConfig from "./components/config/hostEnv.json"
 import Success from './components/status/Success';
 import CancelOrder from './components/status/Cancel';
 import ContactUs from './components/static/ContactUs';
@@ -26,14 +27,16 @@ function App() {
   }
 
   useEffect(() => {
-    axios.post('http://localhost:3000/login',adminConfig)
+    const hostEnv = hostConfig.env
+    const apiHost = (hostEnv === "dev")? hostConfig.devApiHost: hostConfig.prodApiHost;
+    axios.post(apiHost+'/login',adminConfig)
     .then((tokenData)=>{
     return {
         headers: {'Authorization': tokenData.data.token},
     }
     })
     .then((config)=>{
-    return axios.get('http://localhost:3000/products',config)
+    return axios.get(apiHost+'/products',config)
     })
     .then((response) =>{
         const productData = response.data
