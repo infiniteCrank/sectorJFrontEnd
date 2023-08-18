@@ -16,17 +16,12 @@ function SizePicker({
     useEffect(() => {
         if(!(productSizeState[productId])){
             productSizeState[productId]=sizes[0];
-            console.log("possible sizes:")
-            console.log(sizes)
-            console.log("size is defaulted to:"+productSizeState[productId])
             setProductSizeState(productSizeState)
         }
     })
 
     useEffect(() =>{
         const productQtyMap = quantityMap[productId]
-        console.log("quantity map in picker:")
-        console.log(productQtyMap)
         const updateSizes = [];
         for(let i in sizes){
             const sizeLetter = sizes[i]

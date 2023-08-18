@@ -63,7 +63,6 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
 
         if(selectedProduct){
             const selectedProductObject = productsMap[selectedProduct];
-            console.log(selectedProductObject)
             return (
                 <div>
                     <SizePicker 

@@ -43,8 +43,6 @@ function App() {
               delete productData[i]
             }
         }
-        console.log("built qty map:")
-        console.log(newQuantityMap)
         setQuantityMap(newQuantityMap)
         setProductsMap(newProductMap)
         setProducts(productData)
