@@ -28,7 +28,7 @@ function App() {
   useEffect(() => {
     const hostEnv = hostConfig.env
     const apiHost = (hostEnv === "dev")? hostConfig.devApiHost: hostConfig.prodApiHost;
-    axios.post(apiHost+'/products')
+    axios.get(apiHost+'/products')
     .then((response) =>{
         const productData = response.data
         const newProductMap = {}
