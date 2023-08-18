@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 //import adminConfig from "../config/admin.json";
 import Image from '../Image/Image';
-// import {loadStripe} from '@stripe/stripe-js';
-// import stripeKeys from "../config/stripeKey.json"
+import {loadStripe} from '@stripe/stripe-js';
+import stripeKeys from "../config/stripeKey.json"
 import hostConfig from "../config/hostEnv.json"
 
 function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
@@ -154,19 +154,16 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
 
     const hostEnv = hostConfig.env
     const apiHost = (hostEnv === "dev")? hostConfig.devApiHost: hostConfig.prodApiHost;
-    // const stripeKeyToUse = (stripeKeys.env ==="dev")?stripeKeys.test:stripeKeys.prod
-    // console.log(stripeKeyToUse.substring(0,10))
-    // loadStripe(stripeKeyToUse)
-    // .then((stripe)=>{
-    axios.post(apiHost+'/stripe/checkout',requestBody)
-    .then((response)=>{
-      const session = response.data;
-      console.log(session)
-      //window.location.href = res.data.url;
-      // return stripe.redirectToCheckout({ sessionId: session.id });
+    const stripeKeyToUse = (stripeKeys.env ==="dev")?stripeKeys.test:stripeKeys.prod
+    loadStripe(stripeKeyToUse)
+    .then((stripe)=>{
+      axios.post(apiHost+'/stripe/checkout',requestBody)
+      .then((response)=>{
+        const session = response.data;
+        return stripe.redirectToCheckout({ sessionId: session.id });
+      })
+      .catch((err)=>{console.log(err)})
     })
-    .catch((err)=>{console.log(err)})
-    // })
 
   }
 
