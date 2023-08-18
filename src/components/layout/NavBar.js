@@ -161,6 +161,7 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
       axios.post(apiHost+'/stripe/checkout',requestBody)
       .then((response)=>{
         const session = response.data;
+        console.log(session)
         return stripe.redirectToCheckout({ sessionId: session.id });
       })
       .catch((err)=>{console.log(err)})
