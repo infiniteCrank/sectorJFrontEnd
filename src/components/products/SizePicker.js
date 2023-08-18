@@ -7,7 +7,7 @@ function SizePicker({
     productSizeState,
     setProductSizeState,
     label='Select your t-shirt size',
-    outputLabel='You size is',
+    outputLabel='Your size is',
     selectId='sizePicker',
     sizes=['s', 'm', 'l', 'xl']}) {
 
