@@ -26,7 +26,6 @@ function SizePicker({
         for(let i in sizes){
             const sizeLetter = sizes[i]
             const numberOfSize = parseInt(productQtyMap[sizeLetter])
-            console.log("size:"+sizeLetter+" qty:"+numberOfSize)
             if(numberOfSize>0){
                 updateSizes.push(size)
             }
