@@ -155,6 +155,7 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
     const hostEnv = hostConfig.env
     const apiHost = (hostEnv === "dev")? hostConfig.devApiHost: hostConfig.prodApiHost;
     const stripeKeyToUse = (stripeKeys.env ==="dev")?stripeKeys.test:stripeKeys.prod
+    console.log(stripeKeyToUse.substring(0,10))
     loadStripe(stripeKeyToUse)
     .then((stripe)=>{
       axios.post(apiHost+'/stripe/checkout',requestBody)
