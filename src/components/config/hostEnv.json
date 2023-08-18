@@ -1,5 +1,5 @@
 {
     "env":"prod",
     "devApiHost":"http://localhost:3000",
-    "prodApiHost":"http://localhost:3000"
+    "prodApiHost":"http://www.wizduds.com:3000"
 }
