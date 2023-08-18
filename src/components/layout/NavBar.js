@@ -6,6 +6,7 @@ import axios from 'axios';
 import Image from '../Image/Image';
 import {loadStripe} from '@stripe/stripe-js';
 import stripeKeys from "../config/stripeKey.json"
+import hostConfig from "../config/hostEnv.json"
 
 function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
   //let [productTypes, setProductTypes] = useState(null)
@@ -151,6 +152,8 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
     }
     console.log(requestBody)
 
+    const hostEnv = hostConfig.env
+    const apiHost = (hostEnv === "dev")? hostConfig.devApiHost: hostConfig.prodApiHost;
     const stripeKeyToUse = (stripeKeys.env ==="dev")?stripeKeys.test:stripeKeys.prod
     loadStripe(stripeKeyToUse)
     .then((stripe)=>{
