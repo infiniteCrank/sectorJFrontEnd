@@ -29,8 +29,10 @@ function SizePicker({
         console.log(productQtyMap)
         const updateSizes = [];
         for(let i in sizes){
-            const size = sizes[i]
-            if(productQtyMap[size]>0){
+            const sizeLetter = sizes[i]
+            const numberOfSize = parseInt(productQtyMap[sizeLetter])
+            console.log("size:"+sizeLetter+" qty:"+numberOfSize)
+            if(numberOfSize>0){
                 updateSizes.push(size)
             }
         }
