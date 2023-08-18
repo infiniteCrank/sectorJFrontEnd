@@ -5,7 +5,6 @@ import NavBar from './components/layout/NavBar';
 import Products from './components/products/Products';
 import { useState,useEffect } from 'react';
 import axios from 'axios';
-import adminConfig from "./components/config/admin.json";
 import hostConfig from "./components/config/hostEnv.json"
 import Success from './components/status/Success';
 import CancelOrder from './components/status/Cancel';
@@ -29,15 +28,7 @@ function App() {
   useEffect(() => {
     const hostEnv = hostConfig.env
     const apiHost = (hostEnv === "dev")? hostConfig.devApiHost: hostConfig.prodApiHost;
-    axios.post(apiHost+'/login',adminConfig)
-    .then((tokenData)=>{
-    return {
-        headers: {'Authorization': tokenData.data.token},
-    }
-    })
-    .then((config)=>{
-    return axios.get(apiHost+'/products',config)
-    })
+    axios.post(apiHost+'/products')
     .then((response) =>{
         const productData = response.data
         const newProductMap = {}
