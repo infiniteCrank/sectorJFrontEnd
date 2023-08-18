@@ -157,7 +157,7 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
     const stripeKeyToUse = (stripeKeys.env ==="dev")?stripeKeys.test:stripeKeys.prod
     loadStripe(stripeKeyToUse)
     .then((stripe)=>{
-      axios.post('http://localhost:3000/stripe/checkout',requestBody)
+      axios.post(apiHost+'/stripe/checkout',requestBody)
       .then((response)=>{
         const session = response.data;
         return stripe.redirectToCheckout({ sessionId: session.id });
