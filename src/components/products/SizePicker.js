@@ -14,6 +14,7 @@ function SizePicker({
     let [size, setSize] = useState(sizes[0])
     let [availableSizes, setAvailableSizes] = useState([])
     useEffect(() => {
+        console.log(productSizeState[productId])
         if(!(productSizeState[productId])){
             productSizeState[productId]=sizes[0];
             setProductSizeState(productSizeState)
