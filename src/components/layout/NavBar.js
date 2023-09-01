@@ -2,14 +2,12 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-//import adminConfig from "../config/admin.json";
 import Image from '../Image/Image';
 import {loadStripe} from '@stripe/stripe-js';
 import stripeKeys from "../config/stripeKey.json"
 import hostConfig from "../config/hostEnv.json"
 
 function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
-  //let [productTypes, setProductTypes] = useState(null)
   let [itemProductCount, setItemProductCount] = useState(0)
   let [productCartArray, setProductCartArray] = useState([])
   let [cartTotal, setCartTotal] = useState([])
@@ -50,22 +48,6 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
     setItemProductCount(productCount)
     buildCartArray(shoppingCart)
   },[shoppingCart,productsMap])
-
-  // useEffect(() => {
-  //   axios.post('http://localhost:3000/login',adminConfig)
-  //   .then((tokenData)=>{
-  //     return {
-  //       headers: {'Authorization': tokenData.data.token},
-  //     }
-  //   })
-  //   .then((config)=>{
-  //     return axios.get('http://localhost:3000/product/types',config)
-  //   })
-  //   .then((response) =>{
-  //     setProductTypes(response.data)
-  //   })
-  //   .catch((err)=>{console.log(err)})
-  // },[])
 
   const handleViewCart = (e)=>{
     //console.log(shoppingCart)
@@ -150,7 +132,6 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
     const requestBody = {
       lineItems:lineItems
     }
-    console.log(requestBody)
 
     const hostEnv = hostConfig.env
     const apiHost = (hostEnv === "dev")? hostConfig.devApiHost: hostConfig.prodApiHost;
