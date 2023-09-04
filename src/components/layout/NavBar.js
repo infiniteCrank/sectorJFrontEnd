@@ -156,6 +156,15 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
       <Link className="navbar-brand" to="/">
             <img src={process.env.PUBLIC_URL + '/wizduds-logo-small.png'} alt="Wizduds - Extraordinary Clothing" height={100}/>
       </Link>
+      <div className="d-flex">
+        <button className="d-lg-none btn btn-dark" onClick={handleViewCart} data-bs-toggle="modal" data-bs-target="#exampleModal">
+          View Cart
+          <span className="badge rounded-pill bg-danger">
+            {itemProductCount}
+            <span className="visually-hidden">Cart Items</span>
+          </span>
+        </button>
+      </div>
       <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
@@ -185,15 +194,15 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
           <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
           <button className="btn btn-outline-success" type="submit">Search</button>
         </form> */}
-        <div className="d-flex">
-        <button className="btn btn-dark" onClick={handleViewCart} data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <div className="d-sm-none d-md-flex">
+        <button className="d-s-none btn btn-dark" onClick={handleViewCart} data-bs-toggle="modal" data-bs-target="#exampleModal">
           View Cart
           <span className="badge rounded-pill bg-danger">
             {itemProductCount}
             <span className="visually-hidden">Cart Items</span>
           </span>
         </button>
-        </div>
+      </div>
       </div>
     </div>
     </nav>
