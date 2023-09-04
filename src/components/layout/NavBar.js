@@ -195,14 +195,14 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
           <button className="btn btn-outline-success" type="submit">Search</button>
         </form> */}
         <div className="d-sm-none d-md-flex">
-        <button className="d-s-none btn btn-dark" onClick={handleViewCart} data-bs-toggle="modal" data-bs-target="#exampleModal">
-          View Cart
-          <span className="badge rounded-pill bg-danger">
-            {itemProductCount}
-            <span className="visually-hidden">Cart Items</span>
-          </span>
-        </button>
-      </div>
+          <button className="d-s-none btn btn-dark" onClick={handleViewCart} data-bs-toggle="modal" data-bs-target="#exampleModal">
+            View Cart
+            <span className="badge rounded-pill bg-danger">
+              {itemProductCount}
+              <span className="visually-hidden">Cart Items</span>
+            </span>
+          </button>
+        </div>
       </div>
     </div>
     </nav>
