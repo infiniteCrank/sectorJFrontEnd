@@ -2,14 +2,12 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-//import adminConfig from "../config/admin.json";
 import Image from '../Image/Image';
 import {loadStripe} from '@stripe/stripe-js';
 import stripeKeys from "../config/stripeKey.json"
 import hostConfig from "../config/hostEnv.json"
 
 function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
-  //let [productTypes, setProductTypes] = useState(null)
   let [itemProductCount, setItemProductCount] = useState(0)
   let [productCartArray, setProductCartArray] = useState([])
   let [cartTotal, setCartTotal] = useState([])
@@ -50,22 +48,6 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
     setItemProductCount(productCount)
     buildCartArray(shoppingCart)
   },[shoppingCart,productsMap])
-
-  // useEffect(() => {
-  //   axios.post('http://localhost:3000/login',adminConfig)
-  //   .then((tokenData)=>{
-  //     return {
-  //       headers: {'Authorization': tokenData.data.token},
-  //     }
-  //   })
-  //   .then((config)=>{
-  //     return axios.get('http://localhost:3000/product/types',config)
-  //   })
-  //   .then((response) =>{
-  //     setProductTypes(response.data)
-  //   })
-  //   .catch((err)=>{console.log(err)})
-  // },[])
 
   const handleViewCart = (e)=>{
     //console.log(shoppingCart)
@@ -150,7 +132,6 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
     const requestBody = {
       lineItems:lineItems
     }
-    console.log(requestBody)
 
     const hostEnv = hostConfig.env
     const apiHost = (hostEnv === "dev")? hostConfig.devApiHost: hostConfig.prodApiHost;
@@ -175,6 +156,15 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
       <Link className="navbar-brand" to="/">
             <img src={process.env.PUBLIC_URL + '/wizduds-logo-small.png'} alt="Wizduds - Extraordinary Clothing" height={100}/>
       </Link>
+      <div className="d-flex">
+        <button className="d-lg-none btn btn-dark" onClick={handleViewCart} data-bs-toggle="modal" data-bs-target="#exampleModal">
+          View Cart
+          <span className="badge rounded-pill bg-danger">
+            {itemProductCount}
+            <span className="visually-hidden">Cart Items</span>
+          </span>
+        </button>
+      </div>
       <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
@@ -204,14 +194,14 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
           <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
           <button className="btn btn-outline-success" type="submit">Search</button>
         </form> */}
-        <div className="d-flex">
-        <button className="btn btn-dark" onClick={handleViewCart} data-bs-toggle="modal" data-bs-target="#exampleModal">
-          View Cart
-          <span className="badge rounded-pill bg-danger">
-            {itemProductCount}
-            <span className="visually-hidden">Cart Items</span>
-          </span>
-        </button>
+        <div className="d-sm-none d-md-flex">
+          <button className="d-s-none btn btn-dark" onClick={handleViewCart} data-bs-toggle="modal" data-bs-target="#exampleModal">
+            View Cart
+            <span className="badge rounded-pill bg-danger">
+              {itemProductCount}
+              <span className="visually-hidden">Cart Items</span>
+            </span>
+          </button>
         </div>
       </div>
     </div>

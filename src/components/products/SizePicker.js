@@ -27,14 +27,14 @@ function SizePicker({
             const sizeLetter = sizes[i]
             const numberOfSize = parseInt(productQtyMap[sizeLetter])
             if(numberOfSize>0){
-                updateSizes.push(size)
+                updateSizes.push(sizeLetter)
             }
         }
         productSizeState[productId]=updateSizes[0];
         setProductSizeState(productSizeState)
         setSize(updateSizes[0])
         setAvailableSizes(updateSizes)
-    },[quantityMap,sizes,productId,productSizeState,setProductSizeState])
+    },[quantityMap,sizes,productId,productSizeState,setProductSizeState,size])
 
     const styles = {
         select: {
@@ -59,8 +59,8 @@ function SizePicker({
                 style={styles.select}
                 disabled={(availableSizes.length===0)}
             >
-                {(availableSizes.length>0) && availableSizes.map((size) => {
-                    return <option key={size} value={size}>{size.toUpperCase()}</option>;
+                {availableSizes && (availableSizes.length>0) && availableSizes.map((size,i) => {
+                    return <option key={size+productId+i} value={size}>{size && size.toUpperCase()}</option>;
                 })}
             </select>
 
