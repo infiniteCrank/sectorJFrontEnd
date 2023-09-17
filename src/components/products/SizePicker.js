@@ -5,18 +5,17 @@ function SizePicker({
     quantityMap,
     productId,
     productSizeState,
-    setProductSizeState,
+    saveProductSizeState,
     label='Select your t-shirt size',
     outputLabel='Your size is',
     selectId='sizePicker',
     sizes=['s', 'm', 'l', 'xl']}) {
 
-    let [size, setSize] = useState(sizes[0])
     let [availableSizes, setAvailableSizes] = useState([])
     useEffect(() => {
         if(!(productSizeState[productId])){
-            productSizeState[productId]=sizes[0];
-            setProductSizeState(productSizeState)
+            const newSize = sizes[0];
+            saveProductSizeState({productId:productId,newSize})
         }
     })
 
@@ -30,11 +29,10 @@ function SizePicker({
                 updateSizes.push(sizeLetter)
             }
         }
-        productSizeState[productId]=updateSizes[0];
-        setProductSizeState(productSizeState)
-        setSize(updateSizes[0])
         setAvailableSizes(updateSizes)
-    },[quantityMap,sizes,productId,productSizeState,setProductSizeState,size])
+    }
+    ,[quantityMap,sizes,productId,productSizeState,saveProductSizeState]
+    )
 
     const styles = {
         select: {
@@ -43,9 +41,8 @@ function SizePicker({
     };
     const handleChange = (event)=>{
         const newSize=event.target.value;
-        setSize(newSize);
-        productSizeState[productId]=newSize;
-        setProductSizeState(productSizeState)
+        saveProductSizeState({productId:productId,newSize})
+    
     }
     return (
         <div>
@@ -53,7 +50,7 @@ function SizePicker({
             <select 
                 className="form-select" 
                 aria-label={"product size for "+productId} 
-                value={size} 
+                value={productSizeState[productId]} 
                 id={selectId} 
                 onChange={handleChange}
                 style={styles.select}
@@ -64,7 +61,15 @@ function SizePicker({
                 })}
             </select>
 
-            <p className="text-muted"><small>{outputLabel} <strong>{(size && size.toUpperCase()) || "Sold Out"}</strong></small></p>
+            <p 
+            className="text-muted">
+                <small>{outputLabel} 
+                    <strong>
+                        {(productSizeState[productId] && productSizeState[productId].toUpperCase()) 
+                        || "Sold Out"}
+                    </strong>
+                </small>
+            </p>
         </div>
 
     );
