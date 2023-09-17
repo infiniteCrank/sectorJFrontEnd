@@ -59,6 +59,12 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
         return someLeft
     }
 
+    const saveProductSizeState = (data)=>{
+        let newProductSizeState = {...productSizes}
+        newProductSizeState[data.productId]=data.newSize;
+        setProductSizes(newProductSizeState)
+    }
+
     const BuildViewModal = ()=>{
 
         if(selectedProduct){
@@ -70,7 +76,7 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
                         sizes={selectedProductObject.size.split(",")}
                         productId={selectedProductObject._id}
                         productSizeState={productSizes}
-                        setProductSizeState={setProductSizes}
+                        saveProductSizeState={saveProductSizeState}
                     />
                     <button 
                         type="button" 
@@ -114,7 +120,7 @@ function Products({shoppingCart, saveCart, productsMap, products, quantityMap, s
                                 sizes={product.size.split(",")}
                                 productId={product._id}
                                 productSizeState={productSizes}
-                                setProductSizeState={setProductSizes}
+                                saveProductSizeState={saveProductSizeState}
                             />
                         </li>
                         <li className="list-group-item">Price: {product.price}</li>
