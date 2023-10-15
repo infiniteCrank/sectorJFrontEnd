@@ -23,3 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 src/components/config/admin.json
 src/components/config/stripeKey.json
+src/components/config/google-config.json
