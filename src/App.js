@@ -3,7 +3,7 @@ import {Route, Switch} from 'react-router-dom';
 import './App.css';
 import NavBar from './components/layout/NavBar';
 import Products from './components/products/Products';
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useCallback } from 'react';
 import axios from 'axios';
 import hostConfig from "./components/config/hostEnv.json"
 import Success from './components/status/Success';
@@ -54,14 +54,13 @@ function App() {
     .catch((err)=>{console.log(err)})
   },[hostEnv])
 
-  const handleAcceptCookie = () => {
+  const handleAcceptCookie = useCallback(() => {
     const measurementId = googleConfig.measurementId
-    console.log("hostenv:"+hostEnv)
     if((hostEnv === "prod" && measurementId)){
       ReactGA.initialize(measurementId);
     }
 
-  };
+  },[hostEnv]);
 
   const handleDeclineCookie = () => {
     //remove google analytics cookies
@@ -75,7 +74,7 @@ function App() {
     if (isConsent === "true") {
       handleAcceptCookie();
     }
-  });
+  },[handleAcceptCookie]);
 
   return (
     <div className="App">
