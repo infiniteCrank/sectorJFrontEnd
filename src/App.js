@@ -10,8 +10,13 @@ import Success from './components/status/Success';
 import CancelOrder from './components/status/Cancel';
 import ContactUs from './components/static/ContactUs';
 import Policies from './components/static/Policies';
+import ReactGA from 'react-ga';
+import CookieConsent, { Cookies, getCookieConsentValue } from "react-cookie-consent";
+import googleConfig from "./components/config/google-config.json"
 
 function App() {
+  const hostEnv = hostConfig.env
+  
   let [shoppingCart, setShoppingCart] = useState({})
   let [products, setProducts] = useState(null)
   let [productsMap, setProductsMap] = useState({})
@@ -26,7 +31,6 @@ function App() {
   }
 
   useEffect(() => {
-    const hostEnv = hostConfig.env
     const apiHost = (hostEnv === "dev")? hostConfig.devApiHost: hostConfig.prodApiHost;
     axios.get(apiHost+'/products')
     .then((response) =>{
@@ -48,7 +52,30 @@ function App() {
         setProducts(productData)
     })
     .catch((err)=>{console.log(err)})
-  },[])
+  },[hostEnv])
+
+  const handleAcceptCookie = () => {
+    const measurementId = googleConfig.measurementId
+    console.log("hostenv:"+hostEnv)
+    if((hostEnv === "prod" && measurementId)){
+      ReactGA.initialize(measurementId);
+    }
+
+  };
+
+  const handleDeclineCookie = () => {
+    //remove google analytics cookies
+    Cookies.remove("_ga");
+    Cookies.remove("_gat");
+    Cookies.remove("_gid");
+  };
+
+  useEffect(() => {
+    const isConsent = getCookieConsentValue();
+    if (isConsent === "true") {
+      handleAcceptCookie();
+    }
+  });
 
   return (
     <div className="App">
@@ -84,7 +111,15 @@ function App() {
           />} />
     </Switch>
       
-
+    <CookieConsent 
+      enableDeclineButton
+      onAccept={handleAcceptCookie}
+      onDecline={handleDeclineCookie}
+    >
+            We value your privacy.
+            This website or its third-party tools process personal data. 
+            You can opt out of the collection of information by clicking on the "I decline" button.
+    </CookieConsent>
     </div>
   );
 }
