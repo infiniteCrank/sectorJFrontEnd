@@ -21,7 +21,7 @@ function NavBar({shoppingCart, saveCart,quantityMap,saveQuantity,productsMap}) {
       let cartSubTotal = 0
       let ItemCount = 0
       const cartArray =[]
-      let shippingIsOn = true
+      let shippingIsOn = false
       for(let productId in cart){
         ItemCount++
         const cartObject = cart[productId]
