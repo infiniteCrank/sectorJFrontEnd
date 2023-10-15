@@ -62,9 +62,10 @@ function Policies() {
                 </li>
                 <li className="list-group-item">
                     <h3>Website Cookies:</h3>
-                    <p>Wizduds does not collect cookies at this time. that is why we 
-                        have no cookie notice on any of our pages. When and if we start collecting cookies 
-                        Wizduds will provide an opt out strategy for those who do not wish to use cookies.
+                    <p>Wizduds has started using google analytics on this website. we are using this data to 
+                        track user traffic and improve over all usability of our website. We are also using this data 
+                        to track the success of marketing campaigns on various social media. You can opt out of this by clicking
+                        the i decline button on the cookie concent banner.
                     </p>
                 </li>
                 <li className="list-group-item">
